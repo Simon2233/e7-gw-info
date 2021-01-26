@@ -5,7 +5,6 @@ import InfoDisplay from './components/InfoDisplay.js'
 import TabDisplay from './components/TabDisplay.js'
 import GoogleSheet from './components/GoogleSheet.js'
 import logo from './logo.svg';
-import Container from '@material-ui/core/Container';
 
 function App() {
   return (

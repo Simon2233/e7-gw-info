@@ -3,13 +3,6 @@ import superagent from 'superagent';
 
 
 export default function GoogleSheet() {
-  // const doc = new GoogleSpreadsheet('<YOUR-DOC-ID>');
-
-  // // or preferably, loading that info from env vars / config instead of the file
-  // await doc.useServiceAccountAuth({
-  //   client_email: "e7-service@e7-gw-info.iam.gserviceaccount.com",
-  //   private_key: "5934379e378e247299c263067b6d6ddfe34e26be",
-  // });
   const [leftFort, setLeftFort] = useState([]);
   const [rightFort, setRightFort] = useState([]);
   const [midFort, setMidFort] = useState([]);
