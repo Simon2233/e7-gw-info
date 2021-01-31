@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import superagent from 'superagent';
 
 HeroModal.propTypes = {
-    heroDetails: PropTypes.string,
+    heroDetails: PropTypes.object,
     onClose: PropTypes.func,
     open: PropTypes.bool,
 }

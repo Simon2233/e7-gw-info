@@ -1,4 +1,8 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import rootReducer from "./reducers";
+import { getMissingDetailsMiddleware } from "./middleware"
 
-export default createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const middlewareEnhancer = applyMiddleware(getMissingDetailsMiddleware);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export default createStore(rootReducer, composeEnhancers(middlewareEnhancer));

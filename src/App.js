@@ -19,6 +19,7 @@ function App() {
 
   return (
     <div className="App">
+      <GoogleSheet />
       <Container maxWidth={"md"}>
         <div>
           <TabContext value={value}>
@@ -34,9 +35,6 @@ function App() {
             <TabPanel value="4"><Fort fort={constants.STRONGHOLD}/></TabPanel>
           </TabContext>
         </div>
-        {/* <Fort /> */}
-        {/* <TabDisplay></TabDisplay> */}
-        {/* <GoogleSheet></GoogleSheet> */}
       </Container>
     </div>
   );

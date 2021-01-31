@@ -10,7 +10,7 @@ ArtifactModal.propTypes = {
 
 export default function ArtifactModal(props) {
 	const {artifactDetails, onClose, open} = props;
-
+  console.log("HELLO WORLD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", artifactDetails)
 	 return (
         <Modal
           open={open}
@@ -20,15 +20,16 @@ export default function ArtifactModal(props) {
         >
           <Paper>
             { artifactDetails.assets && 
-				<Box>
-					<Box>
-						<img src={artifactDetails.assets.icon} alt={`${artifactDetails.id} icon`} />
-						<Typography variant="h5">{artifactDetails.name}</Typography>
-					</Box>
-					<p id="simple-modal-description">
-						<p><strong>Description: </strong>{artifactDetails.skill.description}</p>
-					</p>
-				</Box> }
+              <Box>
+                <Box>
+                  <img src={artifactDetails.assets.icon} alt={`${artifactDetails.id} icon`} />
+                  <Typography variant="h5">{artifactDetails.name}</Typography>
+                </Box>
+                { artifactDetails.skill && 
+                <p>
+                  <strong>Description: </strong>{artifactDetails.skill.description}
+                </p> }
+              </Box> }
           </Paper>
 	    </Modal>
         )
