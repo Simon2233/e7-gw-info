@@ -60,7 +60,6 @@ export default function ArtifactSelector(props) {
         }
       </div>
       <Autocomplete
-        id="combo-box-demo"
         onChange={(event, artifact) => {
           if (!artifact) {
             setSelectedArtifactId();

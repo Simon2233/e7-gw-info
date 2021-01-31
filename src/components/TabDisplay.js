@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import InfoDisplay from './InfoDisplay.js'
+import Fort from './Fort';
 
 function TabDisplay(props) {
   const { children, value, index, ...other } = props;
@@ -67,16 +67,16 @@ export default function SimpleTabs() {
         </Tabs>
       </AppBar>
       <TabDisplay value={value} index={0}>
-        <InfoDisplay></InfoDisplay>
+        <Fort />
       </TabDisplay>
       <TabDisplay value={value} index={1}>
-        <InfoDisplay></InfoDisplay>
+        <Fort />
       </TabDisplay>
       <TabDisplay value={value} index={2}>
-        <InfoDisplay></InfoDisplay>
+        <Fort />
       </TabDisplay>
       <TabDisplay value={value} index={3}>
-        <InfoDisplay></InfoDisplay>
+        <Fort />
       </TabDisplay>
     </div>
   );

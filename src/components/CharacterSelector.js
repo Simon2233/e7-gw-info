@@ -63,7 +63,6 @@ export default function CharacterSelector(props) {
         }
       </div>
       <Autocomplete
-        id="combo-box-demo"
         onChange={(event, hero) => {
           if (!hero) {
             setSelectedHeroId(null);

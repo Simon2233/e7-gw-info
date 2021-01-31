@@ -16,6 +16,7 @@ export default function EditCharacter(props) {
   function getCharacterInfoUpdateFunc(field) {
     return (value) => setCharacterInfo({...characterInfo, [field]: value});
   }
+
   return (
     <Card elevation={3} style={{margin: "3vh", padding: "3vh"}}>
       <Grid container spacing={1}>
@@ -27,19 +28,19 @@ export default function EditCharacter(props) {
         </Grid>
         <Grid item container xs={12} justify='center' alignItems='center' spacing={1} >
           <Grid item >
-            <ImmunityButton onSelect={getCharacterInfoUpdateFunc("immunity")}  />
+            <ImmunityButton onSelect={getCharacterInfoUpdateFunc("immunity")} immunity={characterInfo.immunity} />
           </Grid>
           <Grid item>
-            <TextField value={characterInfo.hp} id="outlined-basic" label="HP" variant="outlined" style={{width: "7em"}} onChange={(e) => getCharacterInfoUpdateFunc("hp")(e.target.value)} />
+            <TextField value={characterInfo.hp || ""} label="HP" variant="outlined" style={{width: "7em"}} onChange={(e) => getCharacterInfoUpdateFunc("hp")(e.target.value)} />
           </Grid>
           <Grid item>
-            <TextField value={characterInfo.cr} id="outlined-basic" label="CR" variant="outlined" style={{width: "4em"}} onChange={(e) => getCharacterInfoUpdateFunc("cr")(e.target.value)}  />
+            <TextField value={characterInfo.cr || ""} label="CR" variant="outlined" style={{width: "4em"}} onChange={(e) => getCharacterInfoUpdateFunc("cr")(e.target.value)}  />
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <TextField value={characterInfo.additionalInfo} id="outlined-basic" label="Additional Info" multiline fullWidth onChange={(e) => getCharacterInfoUpdateFunc("additionalInfo")(e.target.value)}  />
+          <TextField value={characterInfo.additionalInfo || ""} label="Additional Info" multiline fullWidth onChange={(e) => getCharacterInfoUpdateFunc("additionalInfo")(e.target.value)}  />
         </Grid>
-      </Grid>
+      </Grid> 
     </Card>
   );
 }
