@@ -22,8 +22,6 @@ export default function ArtifactSelector(props) {
     async function getArtifacts() {
       try {
         let response = await superagent.get('https://api.epicsevendb.com/artifact')
-        // console.log("Artifacts Response:")
-        // console.log(response)
         setArtifacts(JSON.parse(response.text).results)
       } catch(err) {
         console.log("Failed request for artifacts")
@@ -43,8 +41,6 @@ export default function ArtifactSelector(props) {
       try {
         let response = await superagent.get(`https://api.epicsevendb.com/artifact/${selectedArtifactId}`)
         let result = JSON.parse(response.text).results[0]
-        // console.log("Artifact Details Response:")
-        // console.log(response)
         setArtifactDetails(result)
       } catch(err) {
         console.log("Failed request for artifact", selectedArtifactId)

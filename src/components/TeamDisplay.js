@@ -1,3 +1,4 @@
+import { Paper } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -34,14 +35,16 @@ const useStyles = makeStyles({
 
 TeamDisplay.propTypes = {
 	setEditingTeam: PropTypes.func,
-	teamInfo: PropTypes.object,
+  teamInfo: PropTypes.object,
+  label: PropTypes.string,
 }
 
 export default function TeamDisplay(props) {
-	const { setEditingTeam, teamInfo } = props;
+	const { setEditingTeam, teamInfo, label } = props;
 
   return (
-  	<div>
+  	<Paper elevation={3} style={{padding: '3vh'}}>
+      <Typography variant="h3">{label}</Typography>
 	  	<Box mb={10}>
 		  <Button onClick={setEditingTeam} variant="contained">Edit</Button>
 		  <Grid container spacing={3}>
@@ -50,6 +53,6 @@ export default function TeamDisplay(props) {
 			  <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
 		  </Grid>
 	  	</Box>
-  	</div>
+  	</Paper>
   );
 }

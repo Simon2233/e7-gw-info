@@ -1,94 +1,112 @@
 import React, { useEffect, useState, Fragment } from "react";
 import superagent from 'superagent';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {editMain} from '../redux/actions'
+import * as constants from '../constants'
 
-
-GoogleSheet.propTypes = {
-  fortInfo: PropTypes.object,
-  setFortInfo: PropTypes.func,
+function makeCharacter(heroId, artifactId, hp, immunity, cr, notes) {
+  return {
+    heroDetails: {
+      _id: heroId
+    },
+    artifactDetails: {
+      _id: artifactId,  
+    },
+    hp: hp,
+    cr: cr,
+    immunity: immunity === 'yes',
+    notes: notes,
+  }
 }
 
-export default function GoogleSheet(props) {
-  const { fortInfo, setFortInfo } = props;
+function makeTeam(sheetTeam) {
+  return {
+    [constants.YOUR_FASTEST_SPEED]: sheetTeam[4][1],
+    [constants.NOTES]: sheetTeam[3][0],
+    [constants.NUM_OUTSPED]: sheetTeam[4][2],
+    [constants.IMG_SRC]: sheetTeam[4][0],
+    [constants.CHAR_1]: makeCharacter(
+      sheetTeam[0][0],
+      sheetTeam[0][1],
+      sheetTeam[0][2],
+      sheetTeam[0][3],
+      sheetTeam[0][4],
+      sheetTeam[0][5],
+    ),
+    [constants.CHAR_2]: makeCharacter(
+      sheetTeam[1][0],
+      sheetTeam[1][1],
+      sheetTeam[1][2],
+      sheetTeam[1][3],
+      sheetTeam[1][4],
+      sheetTeam[1][5],
+    ),
+    [constants.CHAR_3]: makeCharacter(
+      sheetTeam[2][0],
+      sheetTeam[2][1],
+      sheetTeam[2][2],
+      sheetTeam[2][3],
+      sheetTeam[2][4],
+      sheetTeam[2][5],
+    ),
+  }
+}
 
-  // function makeCharacter(a, b, c) {
+function makeFort(sheet) {
+  return {
+    [constants.PLAYER_NAME]: sheet[0][0],
+    [constants.TEAM_1]: makeTeam(sheet.slice(1, 6)),
+    [constants.TEAM_2]: makeTeam(sheet.slice(6, 11)),
+  }
+}
 
-  // }
+function makeMainInfo(sheets) {
+  return {
+    [constants.LEFT_FORTRESS]: makeFort(sheets[0].values),
+    [constants.MIDDLE_FORTRESS]: makeFort(sheets[1].values),
+    [constants.RIGHT_FORTRESS]: makeFort(sheets[2].values),
+    [constants.STRONGHOLD]: makeFort(sheets[3].values),
+  }
+}
 
-  // function makeTeam(a, b) {
+GoogleSheet.propTypes = {
+}
 
-  // }
+function GoogleSheet(props) {
+  const { editMain } = props;
 
-  useEffect(async () => {
-    async function getStronghold() {
+  useEffect(() => {
+    async function getMainInfo() {
+      const range = "M1:R12";
+
       try {
-        let response = await superagent.get("https://sheets.googleapis.com/v4/spreadsheets/1l_UrwdZxNQfpJ0XwZKe0tYCi1R7TjHGJ1fEFa58h404/values:batchGet?ranges='Stronghold'!M1:P11&ranges='Left Fortress'!M1:P11&key=AIzaSyDSCzwVhdk1rFP8dG2Uejl9U-7yw5AMhVM")
-        console.log(response.text)
-        console.log(JSON.parse(response.text).valueRanges[0].values);
-        const sheet = JSON.parse(response.text).valueRanges[0].values;
-        setFortInfo(prevState => ({
-          stronghold: {
-            team1: {
-              character1: {
-                name: sheet[1][0],
-                artifact: sheet[1][1],
-                hp: sheet[1][2],
-                immunity: sheet[1][3]
-              },
-              character2: {
-                name: sheet[2][0],
-                artifact: sheet[2][1],
-                hp: sheet[2][2],
-                immunity: sheet[2][3]
-              },
-              character3: {
-                name: sheet[3][0],
-                artifact: sheet[3][1],
-                hp: sheet[3][2],
-                immunity: sheet[3][3]
-              },
-              notes: sheet[4][0],
-              image: sheet[5][0]
-            },
-            team2: {
-              character1: {
-                name: sheet[6][0],
-                artifact: sheet[6][1],
-                hp: sheet[6][2],
-                immunity: sheet[6][3]
-              },
-              character2: {
-                name: sheet[7][0],
-                artifact: sheet[7][1],
-                hp: sheet[7][2],
-                immunity: sheet[7][3]
-              },
-              character3: {
-                name: sheet[8][0],
-                artifact: sheet[8][1],
-                hp: sheet[8][2],
-                immunity: sheet[8][3]
-              },
-              notes: sheet[9][0],
-              image: sheet[10][0]
-            }
-          }
-        }))
-        console.log(fortInfo);
+        let response = await superagent.get(
+          "https://sheets.googleapis.com/v4/spreadsheets/1l_UrwdZxNQfpJ0XwZKe0tYCi1R7TjHGJ1fEFa58h404/values:batchGet?" + 
+          `ranges='Left Fortress'!${range}&` +
+          `ranges='Middle Fortress'!${range}&` +
+          `ranges='Right Fortress'!${range}&` +
+          `ranges='Stronghold'!${range}&` +
+          "key=AIzaSyDSCzwVhdk1rFP8dG2Uejl9U-7yw5AMhVM"
+        )
+        const sheets = JSON.parse(response.text).valueRanges;
+        
+        const mainInfo = makeMainInfo(sheets);
+        editMain(mainInfo);
+
       } catch(err) {
-        console.log("Failed request for stronghold")
+        console.log("Failed sheets request", err)
         throw err
       }
     }
-    getStronghold()
+    getMainInfo()
   }, [])
   
-
-
-  console.log(stronghold)
   return (
-    <div>
-      <h1>data from google sheets</h1>
-    </div>
+    <>
+      <div></div>
+    </>
   );
 }
+
+export default connect(null, {editMain})(GoogleSheet);

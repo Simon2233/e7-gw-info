@@ -31,10 +31,8 @@ function Fort({ fort, fortInfo, editTeam }) {
     <div>
       {!editingTeam && 
         <>
-	  	    <Typography variant="h4">Team 1</Typography>
-          <TeamDisplay setEditingTeam={() => setEditingTeam(EDITING_TEAM1)} teamInfo={team1Info} />
-	  	    <Typography variant="h4">Team 2</Typography>
-          <TeamDisplay setEditingTeam={() => setEditingTeam(EDITING_TEAM2)} teamInfo={team2Info} />
+          <TeamDisplay label="Team 1" setEditingTeam={() => setEditingTeam(EDITING_TEAM1)} teamInfo={team1Info} />
+          <TeamDisplay label="Team 2"  setEditingTeam={() => setEditingTeam(EDITING_TEAM2)} teamInfo={team2Info} />
         </>
       }
       {editingTeam === EDITING_TEAM1 &&
@@ -47,9 +45,9 @@ function Fort({ fort, fortInfo, editTeam }) {
   );
 }
 
-const mapStateToProps = (state, {fort}) => {
+const mapStateToProps = (state, props) => {
   return ({
-    fortInfo: state.main[fort]
+    fortInfo: state.main[props.fort]
   });
 }
 

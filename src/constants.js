@@ -10,8 +10,8 @@ export const CHAR_1 = 'CHAR_1';
 export const CHAR_2 = 'CHAR_2';
 export const CHAR_3 = 'CHAR_3';
 
-
 export const PLAYER_NAME = 'playerName';
 export const YOUR_FASTEST_SPEED = 'yourFastestSpeed';
 export const NOTES = 'notes';
 export const NUM_OUTSPED = 'numOutsped';
+export const IMG_SRC = 'imgSrc';
