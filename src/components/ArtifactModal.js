@@ -1,34 +1,15 @@
 import { Box, Modal, Paper, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import superagent from 'superagent';
+import React from 'react';
 
 ArtifactModal.propTypes = {
-    artifactId: PropTypes.string,
+    artifactDetails: PropTypes.object,
     onClose: PropTypes.func,
     open: PropTypes.bool,
 }
 
 export default function ArtifactModal(props) {
-	const {artifactId, onClose, open} = props;
-	const [artifactDetails, setArtifactDetails] = useState();
-
-	useEffect(() => {
-	    async function getArtifactDetails() {
-	      try {
-	        let response = await superagent.get(`https://api.epicsevendb.com/artifact/${artifactId}`)
-	        let result = JSON.parse(response.text).results[0]
-	        console.log("Artifact Details Response:")
-	        console.log(response)
-	        setArtifactDetails(result)
-	      } catch(err) {
-	        console.log("Failed request for artifact", artifactId)
-	        throw err
-	      }
-	    }
-
-	    getArtifactDetails()
-	 }, [artifactId])
+	const {artifactDetails, onClose, open} = props;
 
 	 return (
         <Modal
@@ -36,12 +17,12 @@ export default function ArtifactModal(props) {
           onClose={onClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-      >
+        >
           <Paper>
-            { artifactDetails && 
+            { artifactDetails.assets && 
 				<Box>
 					<Box>
-						<img src={artifactDetails.assets.icon} />
+						<img src={artifactDetails.assets.icon} alt={`${artifactDetails.id} icon`} />
 						<Typography variant="h5">{artifactDetails.name}</Typography>
 					</Box>
 					<p id="simple-modal-description">

@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import superagent from 'superagent';
+import * as constants from '../constants';
 import ArtifactModal from './ArtifactModal';
 import { EDITING_TEAM1 } from './Fort';
 import HeroInfo from './HeroInfo';
@@ -32,63 +33,23 @@ const useStyles = makeStyles({
 });
 
 TeamDisplay.propTypes = {
-	setEditTeam: PropTypes.func,
+	setEditingTeam: PropTypes.func,
 	teamInfo: PropTypes.object,
 }
 
 export default function TeamDisplay(props) {
-	const { setEditTeam, teamInfo } = props;
-	const [heroId, setHeroId] = useState(null);
-	const [heroModalOpen, setHeroModalOpen] = useState(false);
-	const [artifactModalOpen, setArtifactModalOpen] = useState(false);
-	const [artifactId, setArtifactId] = useState(null);
-
-	function openHeroModel(heroId) {
-		setHeroId(heroId);
-		setHeroModalOpen(true);
-	}
-
-	function openArtifactModel(artifactId) {
-		setArtifactId(artifactId);
-		setArtifactModalOpen(true)
-	}
+	const { setEditingTeam, teamInfo } = props;
 
   return (
   	<div>
 	  	<Box mb={10}>
-		  <Button onClick={setEditTeam}>Edit</Button>
+		  <Button onClick={setEditingTeam} variant="contained">Edit</Button>
 		  <Grid container spacing={3}>
-			  <HeroInfo
-			    characterInfo={teamInfo.character1}
-				onOpenHero={(heroId) => openHeroModel(heroId)}
-				onOpenArtifact={(artifactId) => openArtifactModel(artifactId)} 
-			  />
-			  <HeroInfo
-			    characterInfo={teamInfo.character2}
-				onOpenHero={(heroId) => openHeroModel(heroId)}
-				onOpenArtifact={(artifactId) => openArtifactModel(artifactId)} 
-			  />
-			  <HeroInfo
-			    characterInfo={teamInfo.character3}
-				onOpenHero={(heroId) => openHeroModel(heroId)}
-				onOpenArtifact={(artifactId) => openArtifactModel(artifactId)} 
-			  />
+			  <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
+			  <HeroInfo charInfo={teamInfo[constants.CHAR_2]} />
+			  <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
 		  </Grid>
 	  	</Box>
-	  	<Box mb={10}>
-	  	</Box>
-		{heroId &&
-			<HeroModal heroId={heroId} open={heroModalOpen} onClose={() => setHeroModalOpen(false)} />
-		}
-		{artifactId &&
-			<ArtifactModal artifactId={artifactId} open={artifactModalOpen} onClose={() => setArtifactModalOpen(false)}  />
-		}
-		{/* {immunity && 
-			<Box>
-				<Typography variant="h4">Immunity<img width="25px" style={{marginLeft: '10px'}} src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png" alt="Immunity"/></Typography>
-				<p><strong>Description: </strong>This unit is not affected by any debuffs or harmful effects.</p>
-			</Box>
-		} */}
   	</div>
   );
 }

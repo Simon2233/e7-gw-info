@@ -5,33 +5,13 @@ import { useEffect, useState } from 'react';
 import superagent from 'superagent';
 
 HeroModal.propTypes = {
-    heroId: PropTypes.string,
+    heroDetails: PropTypes.string,
     onClose: PropTypes.func,
     open: PropTypes.bool,
 }
 
 export default function HeroModal(props) {
-    const {heroId, open, onClose} = props;
-    const [heroDetails, setHeroDetails] = useState(null);
-
-    useEffect(() => {
-	    async function getHeroDetails() {
-	      try {
-	        let response = await superagent.get(`https://api.epicsevendb.com/hero/${heroId}`)
-	        let result = JSON.parse(response.text).results[0]
-	        console.log("Hero Details Response:")
-	        console.log(response)
-	        setHeroDetails(result)
-	        console.log(result.skills[0].assets.icon);
-	      } catch(err) {
-	        console.log("Failed request for hero", heroId)
-	        throw err
-	      }
-	    }
-
-	    getHeroDetails()
-	  }, [heroId])
-	
+    const {heroDetails, open, onClose} = props;
     return (
         <Modal
           open={open}
@@ -40,15 +20,16 @@ export default function HeroModal(props) {
           aria-describedby="simple-modal-description"
       >
           <Paper>
-            { heroDetails && <Box>
+            { heroDetails.assets && 
+                  <Box>
                     <Box>
-                        <img src={heroDetails.assets.icon} />
+                        <img src={heroDetails.assets.icon} alt="hero icon"/>
                         <Typography variant="h5">{heroDetails.name}</Typography>
                     </Box>
                     <p>
-                        <img width="70px" src={heroDetails.skills[0].assets.icon}></img>
-                        <img width="70px" src={heroDetails.skills[1].assets.icon}></img>
-                        <img width="70px" src={heroDetails.skills[2].assets.icon}></img>
+                        <img width="70px" src={heroDetails.skills[0].assets.icon} alt="skill 1"></img>
+                        <img width="70px" src={heroDetails.skills[1].assets.icon} alt="skill 2"></img>
+                        <img width="70px" src={heroDetails.skills[2].assets.icon} alt="skill 3"></img>
                     </p>
                     <p id="simple-modal-description">
                         <p><strong>Skill 1:</strong>{"enhanced_description" in heroDetails.skills[0] ? heroDetails.skills[0].enhanced_description : heroDetails.skills[0].description}</p>

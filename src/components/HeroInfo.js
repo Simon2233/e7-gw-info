@@ -3,7 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import React from 'react';
+import React, { useState } from 'react';
+import ArtifactModal from './ArtifactModal';
+import HeroModal from './HeroModal';
+import { Tooltip } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
@@ -20,43 +23,41 @@ const useStyles = makeStyles({
 });
 
 HeroInfo.propTypes = {
-  characterInfo: PropTypes.object.isRequired,
-  onOpenHero: PropTypes.func.isRequired,
-  onOpenArtifact: PropTypes.func.isRequired,
+  charInfo: PropTypes.object.isRequired,
 }
 
 export default function HeroInfo(props) {
-    const {characterInfo, onOpenHero, onOpenArtifact} = props;
-    let heroDetails;
-    let artifactDetails;
+    const {charInfo} = props;
+    const {heroDetails, artifactDetails} = charInfo;
 
-    if (characterInfo) {
-        heroDetails = characterInfo.heroDetails;
-        artifactDetails = characterInfo.artifactDetails;
-    }
+    const [heroModalOpen, setHeroModalOpen] = useState(false);
+    const [artifactModalOpen, setArtifactModalOpen] = useState(false);
 
     const classes = useStyles();
 
     return (
-    <>
-      <Grid item xs={2} className={classes.item}>
-            <img width="70px" onClick={() => onOpenHero(heroDetails._id)} src={heroDetails ? heroDetails.assets.icon : ""} alt={heroDetails ? heroDetails._id : "no image"}></img>
-            {/* <img onClick={(e) => {handleOpenHero(e)}} width="70px" src="https://assets.epicsevendb.com/_source/face/c2007_s.png" alt="arbiter-vildred"></img> */}
-      </Grid>
-      <Grid item xs={5} className={classes.item}>
-            <Typography variant="h5">{heroDetails ? heroDetails.name : "None"}</Typography>
-            <Typography variant="subtitle2">HP: {characterInfo && characterInfo.hp}</Typography>
-      </Grid>
-      <Grid item xs={4} className={classes.item}>
-          <img width="70px" onClick={() => onOpenArtifact(artifactDetails._id)} src={artifactDetails ? artifactDetails.assets.icon : ""} alt={artifactDetails ? artifactDetails._id : "no image"}></img>
-          {/* <img onClick={(e) => {handleOpenArtifact(e)}} width="70px" src="https://assets.epicsevendb.com/_source/item_arti/icon_art0070.png" alt="draco-plate"></img> */}
-      </Grid>
-      <Grid item xs={1} className={classes.item}>
-          <img style={{width: "25px", opacity: characterInfo && characterInfo.immunity ? "1" : "0.2"}} src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png" alt="Immunity"></img>
-      </Grid>
-      <Grid item xs={12} className={classes.item}>
-          <Box className={classes.info}>Additional Info<br />{characterInfo && characterInfo.additionalInfo}</Box>
-      </Grid>
-    </>
+      <>
+        <Grid item xs={2} className={classes.item}>
+              <img width="70px" onClick={() => setHeroModalOpen(true)} src={heroDetails.assets ? heroDetails.assets.icon : ""} alt={heroDetails._id || "no image"}></img>
+        </Grid>
+        <Grid item xs={5} className={classes.item}>
+              <Typography variant="h5">{heroDetails ? heroDetails.name : "None"}</Typography>
+              <Typography variant="subtitle2">HP: {charInfo.hp}</Typography>
+              <Typography variant="subtitle2">CR: {charInfo.cr}</Typography>
+        </Grid>
+        <Grid item xs={4} className={classes.item}>
+            <img width="70px" onClick={() => setArtifactModalOpen(true)} src={artifactDetails.assets ? artifactDetails.assets.icon : ""} alt={artifactDetails._id || "no image"}></img>
+        </Grid>
+        <Grid item xs={1} className={classes.item}>
+          <Tooltip title="This unit is not affected by any debuffs or harmful effects.">
+            <img style={{width: "25px", opacity: charInfo.immunity ? "1" : "0.2"}} src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png" alt="Immunity"></img>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} className={classes.item}>
+            <Box className={classes.info}>Additional Info<br />{charInfo.notes}</Box>
+        </Grid>
+        <HeroModal heroDetails={heroDetails} open={heroModalOpen} onClose={() => setHeroModalOpen(false)} />
+        <ArtifactModal artifactDetails={artifactDetails} open={artifactModalOpen} onClose={() => setArtifactModalOpen(false)}  />
+      </>
     )
 }
