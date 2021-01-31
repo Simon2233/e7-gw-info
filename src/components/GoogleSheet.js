@@ -85,7 +85,7 @@ export default function GoogleSheet(props) {
   
 
 
-  console.log(stronghold)
+  // console.log(stronghold)
   return (
     <div>
       <h1>data from google sheets</h1>

@@ -18,6 +18,12 @@ export default function EditTeam(props) {
     return (e) => setTeamInfo({...teamInfo, [field]: e.target.value})
   }
   
+  function speedCalc(fastest, cr1, cr2, cr3, faster) {
+    console.log("Your fastest unit is " + fastest);
+    const allyMin = fastest - 10;
+    const enemyMax = (allyMin * cr/100) + 20;
+  }
+
   return (
     <div>
       <Card elevation={3} style={{margin: "3vh", padding: "3vh"}}>
