@@ -1,26 +1,56 @@
-import { Card, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import Edit from './Edit'
+import EditTeam from './EditTeam';
+import TeamDisplay from './TeamDisplay';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { TEAM_1, TEAM_2 } from '../constants';
+import {editTeam} from '../redux/actions';
 
 Fort.propTypes = {
+  fort: PropTypes.string,
 }
 
+export const EDITING_TEAM1 = "EDITING_TEAM_1";
+export const EDITING_TEAM2 = "EDITING_TEAM_2";
 
-const NOT_EDITING = "NOT_EDITING";
-const EDITING_TEAM1 = "EDITING_TEAM_1";
-const EDITING_TEAM2 = "EDITING_TEAM_1";
+function Fort({ fort, fortInfo, editTeam }) {
+  const [editingTeam, setEditingTeam] = useState(null);
+  const team1Info = fortInfo[TEAM_1];
+  const team2Info = fortInfo[TEAM_2];
 
-export default function Fort(props) {
-  // TODO: Toggle this state based on what is being edited
-  const [edit, setEdit] = useState(EDITING_TEAM1);
-  const [team1Info, setTeam1Info] = useState({character1: {}, character2: {}, character3: {}});
-  const [team2Info, setTeam2Info] = useState({});
+
+  function getOnSaveFunc(team) {
+    return teamInfo => {
+      editTeam(fort, team, teamInfo);
+      setEditingTeam(null);
+    }
+  }
 
   return (
     <div>
-      {/* {edit !== NOT_EDITING && */} 
-        <Edit teamInfo={team1Info} setTeamInfo={setTeam1Info} />
-      {/* } */}
+      {!editingTeam && 
+        <>
+	  	    <Typography variant="h4">Team 1</Typography>
+          <TeamDisplay setEditingTeam={() => setEditingTeam(EDITING_TEAM1)} teamInfo={team1Info} />
+	  	    <Typography variant="h4">Team 2</Typography>
+          <TeamDisplay setEditingTeam={() => setEditingTeam(EDITING_TEAM2)} teamInfo={team2Info} />
+        </>
+      }
+      {editingTeam === EDITING_TEAM1 &&
+        <EditTeam teamInfo={team1Info} onSave={getOnSaveFunc(TEAM_1)} />
+      }
+      {editingTeam === EDITING_TEAM2 &&
+        <EditTeam teamInfo={team2Info} onSave={getOnSaveFunc(TEAM_2)} />
+      }
     </div>
   );
 }
+
+const mapStateToProps = (state, {fort}) => {
+  return ({
+    fortInfo: state.main[fort]
+  });
+}
+
+export default connect(mapStateToProps, {editTeam})(Fort);

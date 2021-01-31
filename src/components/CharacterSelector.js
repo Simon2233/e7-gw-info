@@ -16,14 +16,14 @@ export default function CharacterSelector(props) {
   const {heroDetails, onSelect: setHeroDetails } = props;
 
   const [heroes, setHeroes] = useState([])
-  const [selectedHeroId, setSelectedHeroId] = useState(heroDetails && heroDetails._id)
+  const [selectedHeroId, setSelectedHeroId] = useState(heroDetails._id)
 
   useEffect(() => {
     async function getHeroes() {
       try {
         let response = await superagent.get('https://api.epicsevendb.com/hero')
-        console.log("Heroes Response:")
-        console.log(response)
+        // console.log("Heroes Response:")
+        // console.log(response)
         setHeroes(JSON.parse(response.text).results)
       } catch(err) {
         console.log("Failed request for heroes")
@@ -36,15 +36,15 @@ export default function CharacterSelector(props) {
   useEffect(() => {
     async function getHeroDetails() {
       if (!selectedHeroId) {
-        setHeroDetails(null);
+        setHeroDetails({ _id: "" });
         return;
       }
 
       try {
         let response = await superagent.get(`https://api.epicsevendb.com/hero/${selectedHeroId}`)
         let result = JSON.parse(response.text).results[0]
-        console.log("Hero Details Response:")
-        console.log(response)
+        // console.log("Hero Details Response:")
+        // console.log(response)
         setHeroDetails(result);
       } catch(err) {
         console.log("Failed request for hero", selectedHeroId)
@@ -58,12 +58,11 @@ export default function CharacterSelector(props) {
   return (
     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <div style={{width: "12vh", height: "12vh", marginRight: "5px", border: "1px solid rgba(0,0,0,0.10)", borderRadius: "10px"}}>
-        {heroDetails &&
-          <img style={{width: "auto", height: "12vh"}} alt="hero" src={heroDetails.assets.icon} />
+        {heroDetails.assets &&
+          <img style={{width: "auto", height: "12vh"}} alt="hero icon" src={heroDetails.assets.icon} />
         }
       </div>
       <Autocomplete
-        id="combo-box-demo"
         onChange={(event, hero) => {
           if (!hero) {
             setSelectedHeroId(null);
