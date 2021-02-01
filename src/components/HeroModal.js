@@ -18,7 +18,7 @@ export default function HeroModal(props) {
           onClose={onClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-      >
+        >
           <Paper>
             { heroDetails.assets && 
                   <Box>
@@ -32,9 +32,9 @@ export default function HeroModal(props) {
                         <img width="70px" src={heroDetails.skills[2].assets.icon} alt="skill 3"></img>
                     </p>
                     <p id="simple-modal-description">
-                        <p><strong>Skill 1:</strong>{"enhanced_description" in heroDetails.skills[0] ? heroDetails.skills[0].enhanced_description : heroDetails.skills[0].description}</p>
-                        <p><strong>Skill 2:</strong>{"enhanced_description" in heroDetails.skills[1] ? heroDetails.skills[1].enhanced_description : heroDetails.skills[1].description}</p>
-                        <p><strong>Skill 3:</strong>{"enhanced_description" in heroDetails.skills[2] ? heroDetails.skills[2].enhanced_description : heroDetails.skills[2].description}</p>
+                        <p><strong>Skill 1:</strong>{"enhanced_description" in heroDetails.skills[0] ? (heroDetails.skills[0].enhanced_description).replace('{{variable}}', ((heroDetails.skills[0].values[0])*100) + "%") : (heroDetails.skills[0].description).replace('{{variable}}', ((heroDetails.skills[0].values[0])*100) + "%")}</p>
+                        <p><strong>Skill 2:</strong>{"enhanced_description" in heroDetails.skills[1] ? (heroDetails.skills[1].enhanced_description).replace('{{variable}}', ((heroDetails.skills[1].values[0])*100) + "%") : (heroDetails.skills[1].description).replace('{{variable}}', ((heroDetails.skills[1].values[0])*100) + "%")}</p>
+                        <p><strong>Skill 3:</strong>{"enhanced_description" in heroDetails.skills[2] ? (heroDetails.skills[2].enhanced_description).replace('{{variable}}', ((heroDetails.skills[2].values[0])*100) + "%") : (heroDetails.skills[2].description).replace('{{variable}}', ((heroDetails.skills[2].values[0])*100) + "%")}</p>
                     </p>
                 </Box> }
           </Paper>

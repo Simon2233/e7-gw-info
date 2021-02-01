@@ -17,7 +17,7 @@ export default function EditTeam(props) {
   function getOnChangeFunc(field) {
     return (e) => setTeamInfo({...teamInfo, [field]: e.target.value})
   }
-  
+
   return (
     <div>
       <Card elevation={3} style={{margin: "3vh", padding: "3vh"}}>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {editMain} from '../redux/actions'
 import * as constants from '../constants'
 
-function makeCharacter(heroId, artifactId, hp, immunity, cr, notes) {
+function makeCharacter(heroId, artifactId, hp, immunity, cr, notes, maxSpd, minSpd) {
   return {
     heroDetails: {
       _id: heroId
@@ -15,8 +15,21 @@ function makeCharacter(heroId, artifactId, hp, immunity, cr, notes) {
     },
     hp: hp,
     cr: cr,
+    spd: {maxSpd: maxSpd, minSpd: minSpd},
     immunity: immunity === 'yes',
     notes: notes,
+  }
+}
+
+function speedCalc(fastest, faster, myCr, c2, c3) {
+  let maxSpeed;
+  let minSpeed;
+  if (faster == 0) {
+    maxSpeed = ((fastest - 10)*(myCr/100)) + 20;
+    console.log("Fastest: " + fastest);
+    console.log("Faster: " + faster);
+    console.log("CR: " + myCr);
+    console.log("Max Speed: " + maxSpeed);
   }
 }
 
@@ -33,6 +46,7 @@ function makeTeam(sheetTeam) {
       sheetTeam[0][3],
       sheetTeam[0][4],
       sheetTeam[0][5],
+      speedCalc(sheetTeam[4][1], sheetTeam[4][2], sheetTeam[0][4], sheetTeam[1][4], sheetTeam[2][4])
     ),
     [constants.CHAR_2]: makeCharacter(
       sheetTeam[1][0],
@@ -41,6 +55,7 @@ function makeTeam(sheetTeam) {
       sheetTeam[1][3],
       sheetTeam[1][4],
       sheetTeam[1][5],
+      speedCalc(sheetTeam[4][1], sheetTeam[4][2], sheetTeam[1][4], sheetTeam[0][4], sheetTeam[2][4])
     ),
     [constants.CHAR_3]: makeCharacter(
       sheetTeam[2][0],
@@ -49,6 +64,7 @@ function makeTeam(sheetTeam) {
       sheetTeam[2][3],
       sheetTeam[2][4],
       sheetTeam[2][5],
+      speedCalc(sheetTeam[4][1], sheetTeam[4][2], sheetTeam[2][4], sheetTeam[0][4], sheetTeam[1][4])
     ),
   }
 }
@@ -101,7 +117,6 @@ function GoogleSheet(props) {
     }
     getMainInfo()
   }, [])
-  
   return (
     <>
       <div></div>

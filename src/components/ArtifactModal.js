@@ -8,9 +8,14 @@ ArtifactModal.propTypes = {
     open: PropTypes.bool,
 }
 
+
 export default function ArtifactModal(props) {
 	const {artifactDetails, onClose, open} = props;
   console.log("HELLO WORLD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", artifactDetails)
+  let description;
+  if (artifactDetails.skill) {
+    artifactDetails.skill.enhancements[artifactDetails.skill.enhancements.length - 1].forEach(element => description ? description = description.replace('{{variable}}', element*100 + "%") : description = artifactDetails.skill.description.replace('{{variable}}', element*100 + "%"))
+  }
 	 return (
         <Modal
           open={open}
@@ -27,7 +32,7 @@ export default function ArtifactModal(props) {
                 </Box>
                 { artifactDetails.skill && 
                 <p>
-                  <strong>Description: </strong>{artifactDetails.skill.description}
+                  <strong>Description: </strong>{description}
                 </p> }
               </Box> }
           </Paper>
