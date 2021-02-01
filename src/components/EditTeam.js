@@ -17,12 +17,6 @@ export default function EditTeam(props) {
   function getOnChangeFunc(field) {
     return (e) => setTeamInfo({...teamInfo, [field]: e.target.value})
   }
-  
-  function speedCalc(fastest, cr1, cr2, cr3, faster) {
-    console.log("Your fastest unit is " + fastest);
-    const allyMin = fastest - 10;
-    const enemyMax = (allyMin * cr/100) + 20;
-  }
 
   return (
     <div>
