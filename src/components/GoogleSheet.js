@@ -15,7 +15,7 @@ function makeCharacter(heroId, artifactId, hp, immunity, cr, notes, maxSpd, minS
     hp: hp,
     cr: cr,
     spd: {maxSpd: maxSpd, minSpd: minSpd},
-    immunity: immunity === 'yes',
+    immunity: immunity,
     notes: notes,
   }
 }
