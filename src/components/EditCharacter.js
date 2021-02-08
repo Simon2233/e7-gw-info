@@ -1,4 +1,4 @@
-import { Card, Grid, Paper, TextField } from '@material-ui/core';
+import { Card, Grid, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import ArtifactSelector from './ArtifactSelector';
 import CharacterSelector from './CharacterSelector';
@@ -31,7 +31,7 @@ export default function EditCharacter(props) {
         <Grid item xs={12} md={6}>
           <ArtifactSelector label="Artifact" artifactDetails={charInfo.artifactDetails} onSelect={getCharInfoUpdateFunc("artifactDetails")}  />
         </Grid>
-        <Grid item container xs={12} justify='center' alignItems='center' spacing={1} >
+        <Grid item container xs={12} style={{marginLeft: "15px"}} alignItems='center' spacing={1} >
           <Grid item >
             <ImmunityButton immunity={charInfo.immunity} onSelect={getCharInfoUpdateFunc("immunity")} />
           </Grid>

@@ -4,8 +4,9 @@ import EditTeam from './EditTeam';
 import TeamDisplay from './TeamDisplay';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TEAM_1, TEAM_2 } from '../constants';
+import { TEAM_1, TEAM_2, PLAYER_NAME } from '../constants';
 import {editTeam} from '../redux/actions';
+import Grid from '@material-ui/core/Grid';
 
 Fort.propTypes = {
   fort: PropTypes.string,
@@ -29,11 +30,16 @@ function Fort({ fort, fortInfo, editTeam }) {
 
   return (
     <div>
+      <Typography variant="h3">{fortInfo[PLAYER_NAME]}</Typography>
       {!editingTeam && 
-        <>
-          <TeamDisplay label="Team 1" setEditingTeam={() => setEditingTeam(EDITING_TEAM1)} teamInfo={team1Info} />
-          <TeamDisplay label="Team 2"  setEditingTeam={() => setEditingTeam(EDITING_TEAM2)} teamInfo={team2Info} />
-        </>
+        <Grid container spacing={1}>
+          <Grid item md={6}>
+            <TeamDisplay label="Team 1" setEditingTeam={() => setEditingTeam(EDITING_TEAM1)} teamInfo={team1Info} />
+          </Grid>
+          <Grid item md={6}>
+            <TeamDisplay label="Team 2"  setEditingTeam={() => setEditingTeam(EDITING_TEAM2)} teamInfo={team2Info} />
+          </Grid>
+        </Grid>
       }
       {editingTeam === EDITING_TEAM1 &&
         <EditTeam teamInfo={team1Info} onSave={getOnSaveFunc(TEAM_1)} />

@@ -14,7 +14,6 @@ async function getArtifactDetails(dispatch, fort, team, char, artifactId) {
   let response = await superagent.get(`https://api.epicsevendb.com/artifact/${artifactId}`)
   let artifactDetails = JSON.parse(response.text).results[0]
 
-  console.log("HELLO WORLD", fort, team, char, artifactDetails)
   dispatch(addArtifactDetails(fort, team, char, artifactDetails));  
 }
 

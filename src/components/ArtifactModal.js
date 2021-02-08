@@ -11,7 +11,6 @@ ArtifactModal.propTypes = {
 
 export default function ArtifactModal(props) {
 	const {artifactDetails, onClose, open} = props;
-  console.log("HELLO WORLD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", artifactDetails)
   let description;
   if (artifactDetails.skill) {
     artifactDetails.skill.enhancements[artifactDetails.skill.enhancements.length - 1].forEach(element => description ? description = description.replace('{{variable}}', element*100 + "%") : description = artifactDetails.skill.description.replace('{{variable}}', element*100 + "%"))

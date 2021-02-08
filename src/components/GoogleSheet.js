@@ -1,6 +1,5 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import superagent from 'superagent';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {editMain} from '../redux/actions'
 import * as constants from '../constants'

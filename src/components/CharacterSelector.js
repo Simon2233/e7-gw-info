@@ -22,8 +22,6 @@ export default function CharacterSelector(props) {
     async function getHeroes() {
       try {
         let response = await superagent.get('https://api.epicsevendb.com/hero')
-        // console.log("Heroes Response:")
-        // console.log(response)
         setHeroes(JSON.parse(response.text).results)
       } catch(err) {
         console.log("Failed request for heroes")
@@ -43,7 +41,6 @@ export default function CharacterSelector(props) {
       try {
         let response = await superagent.get(`https://api.epicsevendb.com/hero/${selectedHeroId}`)
         let result = JSON.parse(response.text).results[0]
-        // console.log("Hero Details R
         setHeroDetails(result);
       } catch(err) {
         console.log("Failed request for hero", selectedHeroId)
@@ -62,6 +59,7 @@ export default function CharacterSelector(props) {
         }
       </div>
       <Autocomplete
+        defaultValue={heroDetails.name}
         onChange={(event, hero) => {
           if (!hero) {
             setSelectedHeroId(null);

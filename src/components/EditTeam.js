@@ -1,4 +1,4 @@
-import { Card, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
+import { Card, Container, FormControl, Grid, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -19,29 +19,31 @@ export default function EditTeam(props) {
   }
 
   return (
-    <div>
+    <Container maxWidth="md">
       <Card elevation={3} style={{margin: "3vh", padding: "3vh"}}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <TextField label="Player Name" variant="outlined" onChange={getOnChangeFunc(constants.PLAYER_NAME)} />
-          </Grid>
-          <Grid item>
-            <TextField label="Your fastest speed" variant="outlined" onChange={getOnChangeFunc(constants.YOUR_FASTEST_SPEED)} />
-          </Grid>
-          <Grid item>
-            <InputLabel>How many outsped your fastest?</InputLabel>
-            <FormControl>
-              <Select onChange={getOnChangeFunc(constants.NUM_OUTSPED)}>
-                <MenuItem value={""}></MenuItem>
-                <MenuItem value={0}>0</MenuItem>
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-              </Select>
-            </FormControl>
+            <div style={{display: 'flex'}}>
+              <Typography>How fast was the fastest hero you brought?</Typography>
+              <TextField style={{paddingLeft: "1em", width: "2.5em"}} variant="standard" onChange={getOnChangeFunc(constants.YOUR_FASTEST_SPEED)} />
+            </div>
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Team Info" multiline fullWidth onChange={getOnChangeFunc(constants.NOTES)} />
+            <div style={{display: 'flex', alignContent: 'center'}}>
+              <Typography>How many outsped your fastest?</Typography>
+              <FormControl style={{paddingLeft: "1em"}}>
+                <Select onChange={getOnChangeFunc(constants.NUM_OUTSPED)}>
+                  <MenuItem value={""}></MenuItem>
+                  <MenuItem value={0}>0</MenuItem>
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField label="Notes" multiline fullWidth onChange={getOnChangeFunc(constants.NOTES)} />
           </Grid>
         </Grid>
       </Card>
@@ -49,6 +51,6 @@ export default function EditTeam(props) {
       <EditCharacter charInfo={teamInfo[constants.CHAR_2]} setCharInfo={(heroDetails) => setTeamInfo({...teamInfo, [constants.CHAR_2]: heroDetails})}  />
       <EditCharacter charInfo={teamInfo[constants.CHAR_3]} setCharInfo={(heroDetails) => setTeamInfo({...teamInfo, [constants.CHAR_3]: heroDetails})}  />
       <Button onClick={() => onSave(teamInfo)} variant="contained">Save</Button>
-    </div>
+    </Container>
   );
 }
