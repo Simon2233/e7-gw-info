@@ -32,7 +32,7 @@ function Fort({ fort, fortInfo, editTeam }) {
     <div>
       <Typography variant="h3">{fortInfo[PLAYER_NAME]}</Typography>
       {!editingTeam && 
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item md={6}>
             <TeamDisplay label="Team 1" setEditingTeam={() => setEditingTeam(EDITING_TEAM1)} teamInfo={team1Info} />
           </Grid>

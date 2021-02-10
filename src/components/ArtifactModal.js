@@ -1,4 +1,4 @@
-import { Box, Modal, Paper, Typography } from '@material-ui/core';
+import { Box, Dialog, Modal, Paper, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -16,13 +16,13 @@ export default function ArtifactModal(props) {
     artifactDetails.skill.enhancements[artifactDetails.skill.enhancements.length - 1].forEach(element => description ? description = description.replace('{{variable}}', element*100 + "%") : description = artifactDetails.skill.description.replace('{{variable}}', element*100 + "%"))
   }
 	 return (
-        <Modal
+        <Dialog
           open={open}
           onClose={onClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-          <Paper>
+          <Paper style={{padding: "10px"}}>
             { artifactDetails.assets && 
               <Box>
                 <Box>
@@ -35,6 +35,6 @@ export default function ArtifactModal(props) {
                 </p> }
               </Box> }
           </Paper>
-	    </Modal>
+	    </Dialog>
         )
 }

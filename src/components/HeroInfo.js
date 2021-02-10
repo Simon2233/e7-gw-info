@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import ArtifactModal from './ArtifactModal';
@@ -22,6 +22,7 @@ HeroInfo.propTypes = {
   charInfo: PropTypes.object.isRequired,
 }
 
+
 export default function HeroInfo(props) {
     const {charInfo} = props;
     const {heroDetails, artifactDetails} = charInfo;
@@ -41,28 +42,73 @@ export default function HeroInfo(props) {
     }
 
     return (
-      <>
+      <Grid container item>
         <Grid item className={classes.item}>
-          <div style={{position: 'relative', width:"135px", height: "90px"}}>
-            <img style={{position: 'absolute'}} width="auto" height="100vw" onClick={() => setHeroModalOpen(true)} src={heroDetails.assets ? heroDetails.assets.icon : ""} alt={heroDetails._id || "no image"}></img>
-            <img style={{position: 'absolute', top: '50px', left:'80px'}} width="auto" height="70vw" onClick={() => setArtifactModalOpen(true)} src={artifactDetails.assets ? artifactDetails.assets.icon : ""} alt={artifactDetails._id || "no image"}></img>
-          </div>
-        </Grid>
-        <Grid item className={classes.item} style={{flexDirection: "column", }}>
-          <Typography variant="h5">{heroDetails ? heroDetails.name : "None"}</Typography>
-          <Typography variant="subtitle2"><strong>HP: </strong>{charInfo.hp}</Typography>
+          <div style={{position: 'relative', width:"154px", height: "130px", borderRadius: "30px", backgroundColor: "#f0f3f7"}}>
+            {heroDetails.assets && heroDetails.assets.icon &&
+              <img
+                style={{position: 'absolute', top: '5px', left: '5px'}}
+                width="auto"
+                height="100vw"
+                onClick={() => setHeroModalOpen(true)}
+                src={heroDetails.assets.icon}
+                alt={heroDetails._id}>
+              </img>
+            }
+            {
+              artifactDetails.assets && artifactDetails.assets.icon &&
+                <img
+                  style={{position: 'absolute', top: '55px', left:'85px'}}
+                  width="auto"
+                  height="70vw"
+                  onClick={() => setArtifactModalOpen(true)}
+                  src={artifactDetails.assets.icon}
+                  alt={artifactDetails._id}>
+                </img>
+            }
             <Tooltip title={tooltip}>
-              <div style={{position: 'relative', width:"25px"}}>
-                <img style={{position: 'absolute', width: "25px", height: "25px", opacity: charInfo.immunity === "yes" ? "1" : "0.2"}} src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png" alt="Immunity"></img>
-                {charInfo.immunity === "" && <HelpOutlineOutlinedIcon style={{position: 'absolute', width: "25px", height: "25px"}}/>} 
+              <div style={{position: 'absolute', width:"25px", top: '10px', left:'107px'}}>
+                <img style={{position: 'absolute', width: "25px", height: "25px", opacity: charInfo.immunity === "no" ? "0" : "1"}} src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png" alt="Immunity"></img>
+                {charInfo.immunity === "" && <HelpOutlineOutlinedIcon style={{position: 'absolute', width: "25px", height: "25px", color: "rgba(255,255,255,0.9"}}/>} 
               </div>
             </Tooltip>
+          </div>
+        </Grid>
+        <Grid item>
+          <div style={{flexDirection: "column", padding: "3px 10px 10px 10px" }}>
+              <Typography variant="h5">{heroDetails ? heroDetails.name : "None"}</Typography>
+              <Typography>{artifactDetails ? artifactDetails.name : "None"}</Typography>
+              <table>
+                <tr>
+                  <td>
+                    <img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_max_hp.png" alt="hp"></img>
+                  </td>
+                  <td style={{paddingLeft: "5px", letterSpacing: "0.05px"}}>
+                    HP
+                  </td>
+                  <td style={{paddingLeft: "10px"}}>
+                    {charInfo.hp || "?" }
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_speed.png" alt="spd"></img>
+                  </td>
+                  <td style={{paddingLeft: "5px", letterSpacing: "0.05em"}}>
+                    SPD
+                  </td>
+                  <td style={{paddingLeft: "10px"}}>
+                    {charInfo.spd || "?"}
+                  </td>
+                  </tr>
+              </table>
+            </div>
         </Grid>
         <Grid item xs={12} className={classes.item}>
             <p>{charInfo.notes}</p>
         </Grid>
         <HeroModal heroDetails={heroDetails} open={heroModalOpen} onClose={() => setHeroModalOpen(false)} />
         <ArtifactModal artifactDetails={artifactDetails} open={artifactModalOpen} onClose={() => setArtifactModalOpen(false)}  />
-      </>
+      </Grid>
     )
 }

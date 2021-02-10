@@ -4,35 +4,57 @@ import { connect } from 'react-redux';
 import {editMain} from '../redux/actions'
 import * as constants from '../constants'
 
-function makeCharacter(heroId, artifactId, hp, immunity, cr, notes, maxSpd, minSpd) {
+function makeCharacter(heroId, artifactId, hp, immunity, cr, notes, spd) {
   return {
     heroDetails: {
-      _id: heroId
+      _id: heroId || ""
     },
     artifactDetails: {
-      _id: artifactId,  
+      _id: artifactId || "",  
     },
-    hp: hp,
-    cr: cr,
-    spd: {maxSpd: maxSpd, minSpd: minSpd},
-    immunity: immunity,
-    notes: notes,
+    hp: hp || "",
+    cr: cr || "",
+    spd: spd || "",
+    immunity: immunity || "no",
+    notes: notes || "",
   }
 }
 
-function speedCalc(fastest, faster, myCr, c2, c3) {
-  let maxSpeed;
-  let minSpeed;
-  if (faster == 0) {
-    maxSpeed = ((fastest - 10)*(myCr/100)) + 20;
-    console.log("Fastest: " + fastest);
-    console.log("Faster: " + faster);
-    console.log("CR: " + myCr);
-    console.log("Max Speed: " + maxSpeed);
-  }
+
+function speedCalc(fastestSpd, numFaster, c1, c2, c3) {
+  // given a list of numbers, rank them from smallest to largest
+  const crs = {
+    c1: c1,
+    c2: c2,
+    c3: c3,
+  };
+
+  // make array [("c1", value c1), ("c2", value c2), ("c3", value c3)]
+  let orderAndCrArray = Object.entries(crs)
+  // sort descending
+  orderAndCrArray.sort((a, b) => a[1] - b[1])
+  
+  const speeds = {}
+  
+  let i = numFaster
+  orderAndCrArray.forEach(x => {
+    if (i !== 0) {
+      crs[x[0]] = parseInt(x[1])+100
+      i--;
+    }
+  })
+  
+  orderAndCrArray = Object.entries(crs)
+  orderAndCrArray.forEach(x => {
+    speeds[x[0]] = Math.round(fastestSpd * x[1] /100)
+  })  
+
+  return speeds;
 }
 
 function makeTeam(sheetTeam) {
+  const speeds = speedCalc(sheetTeam[4][1], sheetTeam[4][2], sheetTeam[0][4], sheetTeam[1][4], sheetTeam[2][4])
+
   return {
     [constants.YOUR_FASTEST_SPEED]: sheetTeam[4][1],
     [constants.NOTES]: sheetTeam[3][0],
@@ -45,7 +67,7 @@ function makeTeam(sheetTeam) {
       sheetTeam[0][3],
       sheetTeam[0][4],
       sheetTeam[0][5],
-      speedCalc(sheetTeam[4][1], sheetTeam[4][2], sheetTeam[0][4], sheetTeam[1][4], sheetTeam[2][4])
+      speeds.c1,
     ),
     [constants.CHAR_2]: makeCharacter(
       sheetTeam[1][0],
@@ -54,7 +76,7 @@ function makeTeam(sheetTeam) {
       sheetTeam[1][3],
       sheetTeam[1][4],
       sheetTeam[1][5],
-      speedCalc(sheetTeam[4][1], sheetTeam[4][2], sheetTeam[1][4], sheetTeam[0][4], sheetTeam[2][4])
+      speeds.c2,
     ),
     [constants.CHAR_3]: makeCharacter(
       sheetTeam[2][0],
@@ -63,7 +85,7 @@ function makeTeam(sheetTeam) {
       sheetTeam[2][3],
       sheetTeam[2][4],
       sheetTeam[2][5],
-      speedCalc(sheetTeam[4][1], sheetTeam[4][2], sheetTeam[2][4], sheetTeam[0][4], sheetTeam[1][4])
+      speeds.c3,
     ),
   }
 }
@@ -105,8 +127,10 @@ function GoogleSheet(props) {
           "key=AIzaSyDSCzwVhdk1rFP8dG2Uejl9U-7yw5AMhVM"
         )
         const sheets = JSON.parse(response.text).valueRanges;
+        console.log(sheets)
         
         const mainInfo = makeMainInfo(sheets);
+        console.log(mainInfo)
         editMain(mainInfo);
 
       } catch(err) {
@@ -117,9 +141,7 @@ function GoogleSheet(props) {
     getMainInfo()
   }, [])
   return (
-    <>
-      <div></div>
-    </>
+    <></>
   );
 }
 

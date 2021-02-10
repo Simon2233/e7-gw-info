@@ -10,7 +10,8 @@ const initialCharInfo = {
   },
   hp: "",
   cr: "",
-  immunity: false,
+  spd: "",
+  immunity: "no",
   notes: "",
 }
 

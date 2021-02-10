@@ -16,27 +16,26 @@ TeamDisplay.propTypes = {
 export default function TeamDisplay(props) {
   const { setEditingTeam, teamInfo, label } = props;
 
-  let matchStyle = {};
-  const matches = useMediaQuery('(max-width:420px)');
-  if (matches) {
-    matchStyle.marginLeft = "0px";
-    matchStyle.marginRight = "0px";
-  } else {
-    matchStyle.marginLeft = "25px";
-    matchStyle.marginRight = "25  px";
-  }
-
-  return (
-  	<Paper elevation={3} style={{padding: '25px', marginTop: '25px', ...matchStyle }}>
+  const content = (
+    <>
       <div style={{display: 'flex'}}>
         <Typography variant="h4">{label}</Typography>
-        <IconButton onClick={setEditingTeam} variant="contained"><EditIcon /></IconButton>
+        {/* <IconButton onClick={setEditingTeam} variant="contained"><EditIcon /></IconButton> */}
       </div>
-		  <Grid container spacing={3}>
-			  <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
-			  <HeroInfo charInfo={teamInfo[constants.CHAR_2]} />
-			  <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
-		  </Grid>
-  	</Paper>
+      <Grid container spacing={3}>
+        <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
+        <HeroInfo charInfo={teamInfo[constants.CHAR_2]} />
+        <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
+      </Grid>
+    </>
+  )
+
+  const isSmallScreen = useMediaQuery('(max-width:420px)');
+  return (
+    <>
+      <Paper elevation={3} style={{padding: '25px'}}>
+        {content}
+      </Paper>
+    </>
   );
 }

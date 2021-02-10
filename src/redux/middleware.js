@@ -23,16 +23,16 @@ export const getMissingDetailsMiddleware = store => next => action => {
     
     for (const [fort, fortInfo] of Object.entries(state)) {
       for (const [team, teamInfo] of Object.entries(fortInfo)) {
-        if (!teamInfo[CHAR_1]) continue; // Lazy way to get teams only
+        if (!teamInfo || !teamInfo[CHAR_1]) continue; // Lazy way to get teams only
         
         for (const [char, charInfo] of Object.entries(teamInfo)) {
-          if (!charInfo.heroDetails) continue; // Lazy way to get chars only
+          if (!charInfo || !charInfo.heroDetails) continue; // Lazy way to get chars only
 
-          if (!charInfo.heroDetails.assets) {
+          if (!charInfo.heroDetails.assets && charInfo.heroDetails._id) {
             getHeroDetails(store.dispatch, fort, team, char, charInfo.heroDetails._id)
           }
           
-          if (!charInfo.artifactDetails.assets) {
+          if (!charInfo.artifactDetails.assets && charInfo.artifactDetails._id) {
             getArtifactDetails(store.dispatch, fort, team, char, charInfo.artifactDetails._id)
           }
         }
