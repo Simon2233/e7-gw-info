@@ -22,7 +22,7 @@ export default function TeamDisplay(props) {
         <Typography variant="h4">{label}</Typography>
         {/* <IconButton onClick={setEditingTeam} variant="contained"><EditIcon /></IconButton> */}
       </div>
-      <Grid container spacing={3}>
+      <Grid container spacing={0}>
         <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
         <HeroInfo charInfo={teamInfo[constants.CHAR_2]} />
         <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />

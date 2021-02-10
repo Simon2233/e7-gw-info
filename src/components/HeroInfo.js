@@ -76,8 +76,8 @@ export default function HeroInfo(props) {
         </Grid>
         <Grid item>
           <div style={{flexDirection: "column", padding: "3px 10px 10px 10px" }}>
-              <Typography variant="h5">{heroDetails ? heroDetails.name : "None"}</Typography>
-              <Typography>{artifactDetails ? artifactDetails.name : "None"}</Typography>
+              <div><strong>{heroDetails ? heroDetails.name : "None"}</strong></div>
+              <div>{artifactDetails ? artifactDetails.name : "None"}</div>
               <table>
                 <tr>
                   <td>
