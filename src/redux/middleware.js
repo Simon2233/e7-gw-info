@@ -4,17 +4,26 @@ import superagent from 'superagent';
 import {addArtifactDetails, addHeroDetails} from './actions'
 
 async function getHeroDetails(dispatch, fort, team, char, id) {
-  let response = await superagent.get(`https://api.epicsevendb.com/hero/${id}`)
-  let heroDetails = JSON.parse(response.text).results[0]
+  try {
+    let response = await superagent.get(`https://api.epicsevendb.com/hero/${id}`)
+    let heroDetails = JSON.parse(response.text).results[0]
+  
+    dispatch(addHeroDetails(fort, team, char, heroDetails));  
 
-  dispatch(addHeroDetails(fort, team, char, heroDetails));  
+  } catch (err) {
+    console.log("Failed request for heroes", err)
+  }
 }
 
 async function getArtifactDetails(dispatch, fort, team, char, artifactId) {
-  let response = await superagent.get(`https://api.epicsevendb.com/artifact/${artifactId}`)
-  let artifactDetails = JSON.parse(response.text).results[0]
-
-  dispatch(addArtifactDetails(fort, team, char, artifactDetails));  
+  try {
+    let response = await superagent.get(`https://api.epicsevendb.com/artifact/${artifactId}`)
+    let artifactDetails = JSON.parse(response.text).results[0]
+  
+    dispatch(addArtifactDetails(fort, team, char, artifactDetails));  
+  } catch (err) {
+    console.log("Failed request for artifacts", err)
+  }
 }
 
 export const getMissingDetailsMiddleware = store => next => action => {

@@ -44,7 +44,6 @@ export default function CharacterSelector(props) {
         setHeroDetails(result);
       } catch(err) {
         console.log("Failed request for hero", selectedHeroId)
-        throw err
       }
     }
 
