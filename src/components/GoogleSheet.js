@@ -36,7 +36,8 @@ function speedCalc(fastestSpd, numFaster, c1, c2, c3) {
   
   const speeds = {}
   
-  let i = numFaster
+  console.log(orderAndCrArray)
+  let i = parseInt(numFaster)
   orderAndCrArray.forEach(x => {
     if (i !== 0) {
       crs[x[0]] = parseInt(x[1])+100
@@ -44,11 +45,15 @@ function speedCalc(fastestSpd, numFaster, c1, c2, c3) {
     }
   })
   
+  
+  console.log(orderAndCrArray)
   orderAndCrArray = Object.entries(crs)
   orderAndCrArray.forEach(x => {
     speeds[x[0]] = Math.round(fastestSpd * x[1] /100)
   })  
 
+  
+  console.log(orderAndCrArray)
   return speeds;
 }
 
