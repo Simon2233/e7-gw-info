@@ -71,7 +71,7 @@ export default function HeroInfo(props) {
                 </img>
             }
             <Tooltip title={tooltip}>
-              <div style={{position: 'absolute', width:"25px", top: '10px', left:'107px'}}>
+              <div style={{position: 'absolute', width:"25px", top: '0px', left:'73px'}}>
                 <img style={{position: 'absolute', width: "25px", height: "25px", opacity: charInfo.immunity === "no" ? "0" : "1"}} src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png" alt="Immunity"></img>
                 {charInfo.immunity === "" && <HelpOutlineOutlinedIcon style={{position: 'absolute', width: "25px", height: "25px", color: "rgba(255,255,255,0.9"}}/>} 
               </div>
