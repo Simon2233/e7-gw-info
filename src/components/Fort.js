@@ -30,7 +30,7 @@ function Fort({ fort, fortInfo, editTeam }) {
 
   return (
     <div>
-      <Typography variant="h3">{fortInfo[PLAYER_NAME]}</Typography>
+      <Typography variant="h4">{fortInfo[PLAYER_NAME]}</Typography>
       {!editingTeam && 
         <Grid container spacing={2}>
           <Grid item md={6}>

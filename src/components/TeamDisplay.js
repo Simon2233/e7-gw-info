@@ -19,21 +19,27 @@ export default function TeamDisplay(props) {
   const content = (
     <>
       <div style={{display: 'flex'}}>
-        <Typography variant="h4">{label}</Typography>
+        {/* <Typography variant="h5">{label}</Typography> */}
         {/* <IconButton onClick={setEditingTeam} variant="contained"><EditIcon /></IconButton> */}
       </div>
-      <Grid container spacing={0}>
-        <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
-        <HeroInfo charInfo={teamInfo[constants.CHAR_2]} />
-        <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
+        </Grid>
+        <Grid item xs={12}>
+          <HeroInfo charInfo={teamInfo[constants.CHAR_2]} />
+        </Grid>
+        <Grid item xs={12}>
+          <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
+        </Grid>
       </Grid>
     </>
   )
 
-  const isSmallScreen = useMediaQuery('(max-width:420px)');
+  // const isSmallScreen = useMediaQuery('(max-width:420px)');
   return (
     <>
-      <Paper elevation={3} style={{padding: '25px'}}>
+      <Paper elevation={1} style={{padding: '25px', borderRadius: '15px'}} >
         {content}
       </Paper>
     </>

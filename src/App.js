@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App">
       <GoogleSheet />
-      <Container maxWidth={'lg'} disableGutters>
+      <Container maxWidth={'md'} disableGutters>
         <Tabs
           value={value}
           onChange={handleChange}

@@ -16,6 +16,10 @@ const useStyles = makeStyles({
       height: "80px",
       padding: "5px"
     },
+    statIcon: {
+      height: "15px",
+      width: "auto",
+    }
 });
 
 HeroInfo.propTypes = {
@@ -42,14 +46,14 @@ export default function HeroInfo(props) {
     }
 
     return (
-      <Grid container item>
+      <Grid container>
         <Grid item className={classes.item}>
-          <div style={{position: 'relative', width:"154px", height: "130px", borderRadius: "30px", backgroundColor: "#f0f3f7"}}>
+          <div style={{position: 'relative', width:"100px", height: "85px", borderRadius: "30px", backgroundColor: "#f0f3f7"}}>
             {heroDetails.assets && heroDetails.assets.icon &&
               <img
-                style={{position: 'absolute', top: '5px', left: '5px'}}
+                style={{position: 'absolute', top: '0px', left: '0px'}}
                 width="auto"
-                height="100vw"
+                height="70vw"
                 onClick={() => setHeroModalOpen(true)}
                 src={heroDetails.assets.icon}
                 alt={heroDetails._id}>
@@ -58,9 +62,9 @@ export default function HeroInfo(props) {
             {
               artifactDetails.assets && artifactDetails.assets.icon &&
                 <img
-                  style={{position: 'absolute', top: '55px', left:'85px'}}
+                  style={{position: 'absolute', top: '33px', left:'55px'}}
                   width="auto"
-                  height="70vw"
+                  height="50vw"
                   onClick={() => setArtifactModalOpen(true)}
                   src={artifactDetails.assets.icon}
                   alt={artifactDetails._id}>
@@ -73,15 +77,13 @@ export default function HeroInfo(props) {
               </div>
             </Tooltip>
           </div>
-        </Grid>
-        <Grid item>
-          <div style={{flexDirection: "column", padding: "3px 10px 10px 10px" }}>
+          <div style={{flexDirection: "column", padding: "0px 10px 10px 10px" }}>
               <div><strong>{heroDetails ? heroDetails.name : "None"}</strong></div>
               <div>{artifactDetails ? artifactDetails.name : "None"}</div>
-              <table>
+              <table cellSpacing="0" cellPadding="0">
                 <tr>
                   <td>
-                    <img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_max_hp.png" alt="hp"></img>
+                    <img className={classes.statIcon} src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_max_hp.png" alt="hp"></img>
                   </td>
                   <td style={{paddingLeft: "5px", letterSpacing: "0.05px"}}>
                     HP
@@ -92,7 +94,7 @@ export default function HeroInfo(props) {
                 </tr>
                 <tr>
                   <td>
-                    <img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_speed.png" alt="spd"></img>
+                    <img className={classes.statIcon} src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_speed.png" alt="spd"></img>
                   </td>
                   <td style={{paddingLeft: "5px", letterSpacing: "0.05em"}}>
                     SPD
@@ -104,9 +106,11 @@ export default function HeroInfo(props) {
               </table>
             </div>
         </Grid>
-        <Grid item xs={12} className={classes.item}>
-            <p>{charInfo.notes}</p>
-        </Grid>
+        {charInfo.notes && 
+          <Grid item xs={12} className={classes.item}>
+              <p style={{marginTop: "3px", marginBottom: "7px"}}>{charInfo.notes}</p>
+          </Grid>
+        }
         <HeroModal heroDetails={heroDetails} open={heroModalOpen} onClose={() => setHeroModalOpen(false)} />
         <ArtifactModal artifactDetails={artifactDetails} open={artifactModalOpen} onClose={() => setArtifactModalOpen(false)}  />
       </Grid>
