@@ -58,7 +58,6 @@ export default function CharacterSelector(props) {
         }
       </div>
       <Autocomplete
-        defaultValue={heroDetails.name}
         onChange={(event, hero) => {
           if (!hero) {
             setSelectedHeroId(null);

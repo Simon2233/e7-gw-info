@@ -1,7 +1,7 @@
-export const LEFT_FORTRESS = 'LEFT_FORTRESS';
-export const MIDDLE_FORTRESS = 'MIDDLE_FORTRESS';
-export const RIGHT_FORTRESS = 'RIGHT_FORTRESS';
-export const STRONGHOLD = 'STRONGHOLD';
+export const LEFT_FORTRESS = 'Left Fortress';
+export const MIDDLE_FORTRESS = 'Middle Fortress';
+export const RIGHT_FORTRESS = 'Right Fortress';
+export const STRONGHOLD = 'Stronghold';
 
 export const TEAM_1 = 'TEAM_1';
 export const TEAM_2 = 'TEAM_2';

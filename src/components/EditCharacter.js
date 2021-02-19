@@ -1,5 +1,5 @@
 import { Card, Grid, TextField } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ArtifactSelector from './ArtifactSelector';
 import CharacterSelector from './CharacterSelector';
 import ImmunityButton from './ImmunityButton';
@@ -22,8 +22,14 @@ export default function EditCharacter(props) {
   const [cr, setCr] = useState(charInfo.cr)
   const [notes, setNotes] = useState(charInfo.notes)
 
+  useEffect(() => {
+    setHp(charInfo.hp)
+    setCr(charInfo.cr)
+    setNotes(charInfo.notes)
+  }, [charInfo.hp, charInfo.cr, charInfo.notes])
+
   return (
-    <Card elevation={3} style={{margin: "3vh", padding: "3vh"}}>
+    <>
       <Grid container spacing={1}>
         <Grid item xs={12} md={6}>
           <CharacterSelector label="Character" heroDetails={charInfo.heroDetails} onSelect={getCharInfoUpdateFunc("heroDetails")} />
@@ -67,6 +73,6 @@ export default function EditCharacter(props) {
           />
         </Grid>
       </Grid> 
-    </Card>
+    </>
   );
 }

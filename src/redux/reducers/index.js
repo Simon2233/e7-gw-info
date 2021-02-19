@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
-import main from './main'
+import gwInfo from './gwInfo'
+import gapi from './gapi'
 
-export default combineReducers({ main });
+export default combineReducers({ gwInfo, gapi });

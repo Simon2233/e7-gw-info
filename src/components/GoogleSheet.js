@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from "react";
 import superagent from 'superagent';
 import { connect } from 'react-redux';
-import {editMain} from '../redux/actions'
+import {editGwInfo} from '../redux/actions'
 import * as constants from '../constants'
 
 function makeCharacter(heroId, artifactId, hp, immunity, cr, notes, spd) {
@@ -36,7 +36,6 @@ function speedCalc(fastestSpd, numFaster, c1, c2, c3) {
   
   const speeds = {}
   
-  console.log(orderAndCrArray)
   let i = parseInt(numFaster)
   orderAndCrArray.forEach(x => {
     if (i !== 0) {
@@ -46,14 +45,12 @@ function speedCalc(fastestSpd, numFaster, c1, c2, c3) {
   })
   
   
-  console.log(orderAndCrArray)
   orderAndCrArray = Object.entries(crs)
   orderAndCrArray.forEach(x => {
     speeds[x[0]] = Math.round(fastestSpd * x[1] /100)
   })  
 
   
-  console.log(orderAndCrArray)
   return speeds;
 }
 
@@ -103,7 +100,7 @@ function makeFort(sheet) {
   }
 }
 
-function makeMainInfo(sheets) {
+function makeGwInfo(sheets) {
   return {
     [constants.LEFT_FORTRESS]: makeFort(sheets[0].values),
     [constants.MIDDLE_FORTRESS]: makeFort(sheets[1].values),
@@ -116,10 +113,10 @@ GoogleSheet.propTypes = {
 }
 
 function GoogleSheet(props) {
-  const { editMain } = props;
+  const { editGwInfo } = props;
 
   useEffect(() => {
-    async function getMainInfo() {
+    async function getGwInfo() {
       const range = "M1:R12";
 
       try {
@@ -132,22 +129,22 @@ function GoogleSheet(props) {
           "key=AIzaSyDSCzwVhdk1rFP8dG2Uejl9U-7yw5AMhVM"
         )
         const sheets = JSON.parse(response.text).valueRanges;
-        console.log(sheets)
+        // console.log(sheets)
         
-        const mainInfo = makeMainInfo(sheets);
-        console.log(mainInfo)
-        editMain(mainInfo);
+        const gwInfo = makeGwInfo(sheets);
+        // console.log(mainInfo)
+        editGwInfo(gwInfo);
 
       } catch(err) {
         console.log("Failed sheets request", err)
         throw err
       }
     }
-    getMainInfo()
+    getGwInfo()
   }, [])
   return (
     <></>
   );
 }
 
-export default connect(null, {editMain})(GoogleSheet);
+export default connect(null, {editGwInfo})(GoogleSheet);

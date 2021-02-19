@@ -1,7 +1,7 @@
 import * as constants from "../../constants";
-import { ADD_ARTIFACT_DETAILS, ADD_HERO_DETAILS, EDIT_MAIN, EDIT_TEAM } from "../actionTypes";
+import { ADD_ARTIFACT_DETAILS, ADD_HERO_DETAILS, EDIT_GW_INFO, EDIT_TEAM, INIT_GAPI } from "../actionTypes";
 
-const initialCharInfo = {
+export const initialCharInfo = {
   heroDetails: {
     _id: ""
   },
@@ -15,7 +15,7 @@ const initialCharInfo = {
   notes: "",
 }
 
-const initialTeamInfo = {
+export const initialTeamInfo = {
   [constants.YOUR_FASTEST_SPEED]: "",
   [constants.NOTES]: "",
   [constants.NUM_OUTSPED]: "",
@@ -25,7 +25,7 @@ const initialTeamInfo = {
   [constants.CHAR_3]: initialCharInfo,
 }
 
-const initialFort = {
+export const initialFort = {
   [constants.PLAYER_NAME]: "",
   [constants.TEAM_1]: initialTeamInfo,
   [constants.TEAM_2]: initialTeamInfo,
@@ -38,21 +38,22 @@ const initialState = {
   [constants.STRONGHOLD]: initialFort,
 };
 
-export default function main(state = initialState, action) {
+export default function gwInfo(state = initialState, action) {
   switch (action.type) {
     case EDIT_TEAM: {
-      const { fort, team, teamInfo } = action.payload;
+      const { fort, team, teamInfo, name } = action.payload;
       return {
         ...state,
         [fort]: {
           ...state[fort],
-          [team]: teamInfo  
+          [team]: teamInfo,
+          [constants.PLAYER_NAME]: name,
         }
       };
     }
-    case EDIT_MAIN: {
-      const {mainInfo} = action.payload;
-      return extend(true, state, mainInfo)
+    case EDIT_GW_INFO: {
+      const {gwInfo} = action.payload;
+      return extend(true, state, gwInfo)
     }
     case ADD_HERO_DETAILS: {
       const { fort, team, char, heroDetails } = action.payload;

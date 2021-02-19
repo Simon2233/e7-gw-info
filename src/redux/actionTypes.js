@@ -1,4 +1,6 @@
 export const EDIT_TEAM = "EDIT_TEAM";
-export const EDIT_MAIN = "EDIT_MAIN";
+export const EDIT_GW_INFO = "EDIT_GW_INFO";
 export const ADD_HERO_DETAILS = "ADD_HERO_DETAILS";
 export const ADD_ARTIFACT_DETAILS = "ADD_ARTIFACT_DETAILS";
+export const LOAD_CHARACTERS = "LOAD_CHARACTERS";
+export const INIT_GAPI = "INIT_GAPI";

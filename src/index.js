@@ -7,6 +7,21 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux'
 import store from './redux/store'
 
+import { initGapi } from './redux/actions'
+
+// Garbage. fix if not lazy
+const gapi = window.gapi;
+if (gapi !== undefined) {
+  console.log("Quick loaded", gapi);
+  store.dispatch(initGapi(gapi));
+} else {
+  document.getElementById("gapi").addEventListener('load', () => {
+    console.log("Slow loaded", window.gapi);
+    store.dispatch(initGapi(window.gapi))
+  })
+}
+// End garbage
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store} >

@@ -5,7 +5,7 @@ import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 
 ImmunityButton.propTypes = {
   onSelect: PropTypes.func,
-  immunity: PropTypes.bool,
+  immunity: PropTypes.string,
 }
 
 export default function ImmunityButton(props) {
@@ -16,9 +16,9 @@ export default function ImmunityButton(props) {
       case "yes": {
         return "no";
       }
-      case "no": {
-        return null;
-      }
+      // case "no": {
+      //   return null;
+      // }
       default: {
         return "yes";
       }
@@ -49,7 +49,7 @@ export default function ImmunityButton(props) {
           src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png"
         />
       }
-      {
+      {/* {
         immunity === null && 
         <div style={{position: 'relative', width: "8vh", height: "8vh"}}>
           <img 
@@ -59,7 +59,7 @@ export default function ImmunityButton(props) {
           />
           <HelpOutlineOutlinedIcon style={{left: "0px",  position: 'absolute', width: "8vh", height: "8vh", color: "#666666"}}/>
         </div>
-      }
+      } */}
     </div>
   );
 }
