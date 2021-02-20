@@ -1,21 +1,29 @@
 import { Container, Tabs } from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Fort from './components/Fort';
-import GoogleSheet from './components/GoogleSheet.js';
 import * as constants from './constants';
 import SwipeableViews from 'react-swipeable-views';
+import {initGapi} from './redux/actions'
+import { connect } from 'react-redux';
+import GoogleSheet from './components/GoogleSheet'
+import EpicSevenApi from './components/EpicSevenApi'
 
-function App() {
+function App({initGapi}) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  useEffect(() => {
+    initGapi(window.gapi);
+  }, [])
+
   return (
     <div className="App">
       <GoogleSheet />
+      <EpicSevenApi />
       <Container maxWidth={'md'} disableGutters>
         <Tabs
           value={value}
@@ -47,4 +55,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(null, {initGapi})(App);

@@ -3,57 +3,31 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import superagent from 'superagent';
+import { connect } from 'react-redux'
+import { callArtifactListApi } from './EpicSevenApi';
+import { loadArtifactMap } from '../redux/actions'
 
 ArtifactSelector.propTypes = {
   error: PropTypes.bool,
   helperText: PropTypes.string,
   label: PropTypes.string,
   onSelect: PropTypes.func,
-  artifactDetails: PropTypes.object,
+  artifactId: PropTypes.string,
 }
 
-export default function ArtifactSelector(props) {
-  const { artifactDetails, onSelect: setArtifactDetails  } = props
-
-  const [artifacts, setArtifacts] = useState([])
-  const [selectedArtifactId, setSelectedArtifactId] = useState(artifactDetails._id)
+function ArtifactSelector(props) {
+  const { artifactId, artifactMap, onSelect: setArtifactDetails, loadArtifactMap  } = props
+  const [selectedArtifactId, setSelectedArtifactId] = useState(artifactId);
+  const artifactDetails = artifactMap[artifactId];
 
   useEffect(() => {
-    async function getArtifacts() {
-      try {
-        let response = await superagent.get('https://api.epicsevendb.com/artifact')
-        setArtifacts(JSON.parse(response.text).results)
-      } catch(err) {
-        console.log("Failed request for artifacts", err)
-      }
-    }
-    getArtifacts()
+    callArtifactListApi(loadArtifactMap)
   }, [])
-
-  useEffect(() => {
-    async function getArtifactDetails() {
-      if (!selectedArtifactId) {
-        setArtifactDetails({ _id: "" });
-        return;
-      }
-
-      try {
-        let response = await superagent.get(`https://api.epicsevendb.com/artifact/${selectedArtifactId}`)
-        let result = JSON.parse(response.text).results[0]
-        setArtifactDetails(result)
-      } catch(err) {
-        console.log("Failed request for artifact", selectedArtifactId)
-        throw err
-      }
-    }
-
-    getArtifactDetails()
-  }, [selectedArtifactId])
 
   return (
     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <div style={{width: "12vh", height: "12vh", marginRight: "5px", border: "1px solid rgba(0,0,0,0.10)", borderRadius: "10px"}}>
-      {artifactDetails.assets &&
+      {artifactDetails &&
          <img style={{width: "auto", height: "12vh"}} alt="artifact" src={artifactDetails.assets.icon} />
         }
       </div>
@@ -66,7 +40,8 @@ export default function ArtifactSelector(props) {
           }
           setSelectedArtifactId(artifact._id);
         }}
-        options={artifacts}
+        defaultValue={artifactDetails}
+        options={Object.values(artifactMap)}
         getOptionLabel={(artifact) => artifact.name}
         style={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label={props.label} variant="outlined" error={props.error} helperText={props.helperText} />}
@@ -74,3 +49,11 @@ export default function ArtifactSelector(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return ({
+    artifactMap: state.e7api.artifactMap,
+  });
+}
+
+export default connect(mapStateToProps, {loadArtifactMap})(ArtifactSelector);

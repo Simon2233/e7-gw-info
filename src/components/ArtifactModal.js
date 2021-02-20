@@ -1,19 +1,22 @@
-import { Box, Dialog, Modal, Paper, Typography } from '@material-ui/core';
+import { Box, Dialog, Paper, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
 ArtifactModal.propTypes = {
-    artifactDetails: PropTypes.object,
+    artifactId: PropTypes.string,
     onClose: PropTypes.func,
     open: PropTypes.bool,
 }
 
 
-export default function ArtifactModal(props) {
+function ArtifactModal(props) {
 	const {artifactDetails, onClose, open} = props;
   let description;
-  if (artifactDetails.skill) {
-    artifactDetails.skill.enhancements[artifactDetails.skill.enhancements.length - 1].forEach(element => description ? description = description.replace('{{variable}}', element*100 + "%") : description = artifactDetails.skill.description.replace('{{variable}}', element*100 + "%"))
+  if (artifactDetails && artifactDetails.skill) {
+    artifactDetails.skill.enhancements[artifactDetails.skill.enhancements.length - 1].forEach(element => {
+      description = artifactDetails.skill.description.replace('{{variable}}', Math.round(element*100) + "%")
+    })
   }
 	 return (
         <Dialog
@@ -23,13 +26,13 @@ export default function ArtifactModal(props) {
           aria-describedby="simple-modal-description"
         >
           <Paper style={{padding: "10px"}}>
-            { artifactDetails.assets && 
+            { artifactDetails && 
               <Box>
                 <Box>
                   <img src={artifactDetails.assets.icon} alt={`${artifactDetails.id} icon`} />
                   <Typography variant="h5">{artifactDetails.name}</Typography>
                 </Box>
-                { artifactDetails.skill && 
+                { artifactDetails.description && 
                 <p>
                   <strong>Description: </strong>{description}
                 </p> }
@@ -38,3 +41,11 @@ export default function ArtifactModal(props) {
 	    </Dialog>
         )
 }
+
+const mapStateToProps = (state, props) => {
+  return ({
+    artifactDetails: state.e7api.artifactMap[props.artifactId],
+  });
+}
+
+export default connect(mapStateToProps)(ArtifactModal);

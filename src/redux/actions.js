@@ -17,17 +17,17 @@ export const editGwInfo = (gwInfo) => ({
   }
 });
 
-export const addHeroDetails = (fort, team, char, heroDetails) => ({
+export const addHeroDetails = (heroDetails) => ({
   type: actionTypes.ADD_HERO_DETAILS,
   payload: {
-    fort, team, char, heroDetails
+    heroDetails
   }
 });
 
-export const addArtifactDetails = (fort, team, char, artifactDetails) => ({
+export const addArtifactDetails = (artifactDetails) => ({
   type: actionTypes.ADD_ARTIFACT_DETAILS,
   payload: {
-    fort, team, char, artifactDetails
+    artifactDetails
   }
 });
 
@@ -35,5 +35,19 @@ export const initGapi = (gapi) => ({
   type: actionTypes.INIT_GAPI,
   payload: {
     gapi
+  }
+});
+
+export const loadHeroMap = (heroMap) => ({
+  type: actionTypes.LOAD_HERO_MAP,
+  payload: {
+    heroMap
+  }
+});
+
+export const loadArtifactMap = (artifactMap) => ({
+  type: actionTypes.LOAD_ARTIFACT_MAP,
+  payload: {
+    artifactMap
   }
 });

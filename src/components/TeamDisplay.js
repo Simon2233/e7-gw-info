@@ -1,26 +1,24 @@
-import { IconButton, Paper, useMediaQuery } from '@material-ui/core';
+import { IconButton, Paper } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import * as constants from '../constants';
 import HeroInfo from './HeroInfo';
-import EditIcon from '@material-ui/icons/Edit';
 
 TeamDisplay.propTypes = {
 	setEditingTeam: PropTypes.func,
-  teamInfo: PropTypes.object,
-  label: PropTypes.string,
+  team: PropTypes.string,
+  fort: PropTypes.string,
 }
 
-export default function TeamDisplay(props) {
-  const { setEditingTeam, teamInfo, label } = props;
+function TeamDisplay(props) {
+  const { setEditingTeam, teamInfo } = props;
+  const showEdit = true;
 
   const content = (
     <div style={{position: "relative"}}>
-      <div style={{position: "absolute", right: "-10px", bottom: "0px"}}>
-        <IconButton onClick={setEditingTeam} variant="contained"><EditIcon /></IconButton>
-      </div>
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
@@ -32,10 +30,14 @@ export default function TeamDisplay(props) {
           <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
         </Grid>
       </Grid>
+      {showEdit && 
+        <div style={{position: "absolute", right: "-10px", bottom: "0px"}}>
+          <IconButton onClick={setEditingTeam} variant="contained"><EditIcon /></IconButton>
+        </div>
+      }
     </div>
   )
 
-  // const isSmallScreen = useMediaQuery('(max-width:420px)');
   return (
     <>
       <Paper elevation={1} style={{padding: '25px', borderRadius: '15px'}} >
@@ -44,3 +46,12 @@ export default function TeamDisplay(props) {
     </>
   );
 }
+
+const mapStateToProps = (state, props) => {
+  return ({
+    teamInfo: state.gwInfo[props.fort][props.team],
+    gapi: state.gapi,
+  });
+}
+
+export default connect(mapStateToProps)(TeamDisplay);

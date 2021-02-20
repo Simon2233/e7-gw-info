@@ -1,21 +1,43 @@
-import { LOAD_CHARACTERS } from "../actionTypes";
+import { LOAD_HERO_MAP, LOAD_ARTIFACT_MAP, ADD_HERO_DETAILS, ADD_ARTIFACT_DETAILS } from "../actionTypes";
 
 
-// WIP
-const initialState = {};
+const initialState = { heroMap: {}, artifactMap: {} };
 
 export default function gwInfo(state = initialState, action) {
   switch (action.type) {
-    case LOAD_CHARACTERS: {
-      const { results } = action.payload;
-      
-      return {
-        ...state,
-        [fort]: {
-          ...state[fort],
-          [team]: teamInfo  
+    case LOAD_HERO_MAP: {
+      const { heroMap } = action.payload;
+      const newState = {
+        heroMap
+      }
+      return extend(true, state, newState)
+    }
+    case LOAD_ARTIFACT_MAP: {
+      const { artifactMap } = action.payload;
+      const newState = {
+        artifactMap
+      }
+      return extend(true, state, newState)
+    }
+    case ADD_HERO_DETAILS: {
+      const { heroDetails } = action.payload;
+      const newState = {
+        heroMap: {
+          [heroDetails._id]: heroDetails
         }
-      };
+      }
+
+      return extend(true, state, newState)
+    }
+    case ADD_ARTIFACT_DETAILS: {
+      const { artifactDetails } = action.payload;
+      const newState = {
+        artifactMap: {
+          [artifactDetails._id]: artifactDetails
+        }
+      }
+      
+      return extend(true, state, newState)
     }
     default:
       return state;
@@ -23,7 +45,6 @@ export default function gwInfo(state = initialState, action) {
 }
 
 function extend() {
-
 	// Variables
 	var extended = {};
 	var deep = false;

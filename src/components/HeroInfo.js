@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
+import { Tooltip } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import ArtifactModal from './ArtifactModal';
 import HeroModal from './HeroModal';
-import { Tooltip } from '@material-ui/core';
-import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 
 const useStyles = makeStyles({
     item: {
@@ -27,9 +27,11 @@ HeroInfo.propTypes = {
 }
 
 
-export default function HeroInfo(props) {
-    const {charInfo} = props;
-    const {heroDetails, artifactDetails} = charInfo;
+function HeroInfo(props) {
+    const {charInfo, artifactMap, heroMap} = props;
+
+    const heroDetails = heroMap[charInfo.heroId]
+    const artifactDetails = artifactMap[charInfo.artifactId]
 
     const [heroModalOpen, setHeroModalOpen] = useState(false);
     const [artifactModalOpen, setArtifactModalOpen] = useState(false);
@@ -49,7 +51,7 @@ export default function HeroInfo(props) {
       <Grid container>
         <Grid item className={classes.item}>
           <div style={{position: 'relative', width:"100px", height: "85px", borderRadius: "30px", backgroundColor: "#f0f3f7"}}>
-            {heroDetails.assets && heroDetails.assets.icon &&
+            {heroDetails &&
               <img
                 style={{position: 'absolute', top: '0px', left: '0px'}}
                 width="auto"
@@ -60,7 +62,7 @@ export default function HeroInfo(props) {
               </img>
             }
             {
-              artifactDetails.assets && artifactDetails.assets.icon &&
+              artifactDetails &&
                 <img
                   style={{position: 'absolute', top: '33px', left:'55px'}}
                   width="auto"
@@ -111,8 +113,17 @@ export default function HeroInfo(props) {
               <p style={{marginTop: "3px", marginBottom: "7px"}}>{charInfo.notes}</p>
           </Grid>
         }
-        <HeroModal heroDetails={heroDetails} open={heroModalOpen} onClose={() => setHeroModalOpen(false)} />
-        <ArtifactModal artifactDetails={artifactDetails} open={artifactModalOpen} onClose={() => setArtifactModalOpen(false)}  />
+        <HeroModal heroId={charInfo.heroId} open={heroModalOpen} onClose={() => setHeroModalOpen(false)} />
+        <ArtifactModal artifactId={charInfo.artifactId} open={artifactModalOpen} onClose={() => setArtifactModalOpen(false)}  />
       </Grid>
     )
 }
+
+const mapStateToProps = (state) => {
+  return ({
+    heroMap: state.e7api.heroMap,
+    artifactMap: state.e7api.artifactMap,
+  });
+}
+
+export default connect(mapStateToProps)(HeroInfo);

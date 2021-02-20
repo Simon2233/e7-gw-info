@@ -3,58 +3,32 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import superagent from 'superagent';
+import { callHeroListApi } from './EpicSevenApi';
+import { loadHeroMap } from '../redux/actions'
+import { connect } from 'react-redux'
 
 CharacterSelector.propTypes = {
   error: PropTypes.bool,
   helperText: PropTypes.string,
   label: PropTypes.string,
   onSelect: PropTypes.func,
-  heroDetails: PropTypes.object,
+  heroId: PropTypes.object,
 }
 
-export default function CharacterSelector(props) {
-  const {heroDetails, onSelect: setHeroDetails } = props;
-
-  const [heroes, setHeroes] = useState([])
-  const [selectedHeroId, setSelectedHeroId] = useState(heroDetails._id)
+function CharacterSelector(props) {
+  const {heroId, heroMap, onSelect: setHeroDetails, loadHeroMap } = props;
+  const [selectedHeroId, setSelectedHeroId] = useState(heroId)
+  const heroDetails = heroMap[heroId];
 
   useEffect(() => {
-    async function getHeroes() {
-      try {
-        let response = await superagent.get('https://api.epicsevendb.com/hero')
-        setHeroes(JSON.parse(response.text).results)
-      } catch(err) {
-        console.log("Failed request for heroes")
-        throw err
-      }
-    }
-    getHeroes()
+    callHeroListApi(loadHeroMap)
   }, [])
-
-  useEffect(() => {
-    async function getHeroDetails() {
-      if (!selectedHeroId) {
-        setHeroDetails({ _id: "" });
-        return;
-      }
-
-      try {
-        let response = await superagent.get(`https://api.epicsevendb.com/hero/${selectedHeroId}`)
-        let result = JSON.parse(response.text).results[0]
-        setHeroDetails(result);
-      } catch(err) {
-        console.log("Failed request for hero", selectedHeroId)
-      }
-    }
-
-    getHeroDetails()
-  }, [selectedHeroId])
 
   return (
     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <div style={{width: "12vh", height: "12vh", marginRight: "5px", border: "1px solid rgba(0,0,0,0.10)", borderRadius: "10px"}}>
-        {heroDetails.assets &&
-          <img style={{width: "auto", height: "12vh"}} alt="hero icon" src={heroDetails.assets.icon} />
+        {heroDetails &&
+          <img style={{width: "auto", height: "12vh"}} alt={heroId} src={heroDetails.assets.icon} />
         }
       </div>
       <Autocomplete
@@ -66,7 +40,8 @@ export default function CharacterSelector(props) {
           }
           setSelectedHeroId(hero._id);
         }}
-        options={heroes}
+        defaultValue={heroDetails}
+        options={Object.values(heroMap)}
         getOptionLabel={(hero) => hero.name}
         style={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label={props.label} variant="outlined" error={props.error} helperText={props.helperText} />}
@@ -74,3 +49,11 @@ export default function CharacterSelector(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return ({
+    heroMap: state.e7api.heroMap,
+  });
+}
+
+export default connect(mapStateToProps, {loadHeroMap})(CharacterSelector);

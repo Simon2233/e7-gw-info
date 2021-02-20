@@ -16,9 +16,6 @@ export default function ImmunityButton(props) {
       case "yes": {
         return "no";
       }
-      // case "no": {
-      //   return null;
-      // }
       default: {
         return "yes";
       }
@@ -49,17 +46,6 @@ export default function ImmunityButton(props) {
           src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png"
         />
       }
-      {/* {
-        immunity === null && 
-        <div style={{position: 'relative', width: "8vh", height: "8vh"}}>
-          <img 
-            style={{left: "0px", position: 'absolute', width: "8vh", height: "8vh", opacity: "0.2"}} 
-            alt="no immunity" 
-            src="https://epic7x.com/wp-content/uploads/2018/12/stic_debuf_impossible.png"
-          />
-          <HelpOutlineOutlinedIcon style={{left: "0px",  position: 'absolute', width: "8vh", height: "8vh", color: "#666666"}}/>
-        </div>
-      } */}
     </div>
   );
 }

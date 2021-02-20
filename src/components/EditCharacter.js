@@ -32,10 +32,10 @@ export default function EditCharacter(props) {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12} md={6}>
-          <CharacterSelector label="Character" heroDetails={charInfo.heroDetails} onSelect={getCharInfoUpdateFunc("heroDetails")} />
+          <CharacterSelector label="Character" heroId={charInfo.heroId} onSelect={getCharInfoUpdateFunc("heroId")} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ArtifactSelector label="Artifact" artifactDetails={charInfo.artifactDetails} onSelect={getCharInfoUpdateFunc("artifactDetails")}  />
+          <ArtifactSelector label="Artifact" artifactId={charInfo.artifactId} onSelect={getCharInfoUpdateFunc("artifactId")}  />
         </Grid>
         <Grid item container xs={12} style={{marginLeft: "15px"}} alignItems='center' spacing={1} >
           <Grid item >

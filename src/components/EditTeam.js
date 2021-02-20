@@ -1,26 +1,94 @@
-import { Card, Container, FormControl, Grid, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { Card, FormControl, Grid, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { getInitialTeamInfo } from '../structs';
+import * as constants from '../constants';
 import EditCharacter from './EditCharacter';
-import * as constants from '../constants'
-import {initialTeamInfo} from '../redux/reducers/gwInfo'
+import {editTeam} from '../redux/actions';
 
-EditTeam.propTypes = {
-  teamInfo: PropTypes.object,
-  playerName: PropTypes.string,
-  onSave: PropTypes.func,
-  onCancel: PropTypes.func,
+
+function getValueRange(fort, range, value) {
+  return ({
+    range: `${fort}!${range}`,
+    values: [[value]],
+  });
 }
 
-export default function EditTeam(props) {
+const params = {
+  spreadsheetId: '1l_UrwdZxNQfpJ0XwZKe0tYCi1R7TjHGJ1fEFa58h404',  
+};
+
+async function updateSheetTeam(fort, team, teamInfo, name, gapi) {
+  const startIndex = team === constants.TEAM_1 ? 6 : 58;
+  
+  const requestBody = {
+    valueInputOption: "RAW",
+    data: [
+        getValueRange(fort, `B2`, name),
+
+        getValueRange(fort, `B${startIndex+0}`, teamInfo[constants.YOUR_FASTEST_SPEED]),
+        getValueRange(fort, `G${startIndex+0}`, teamInfo[constants.NUM_OUTSPED]),
+      
+        getValueRange(fort, `B${startIndex+3}`, teamInfo[constants.CHAR_1].heroId),
+        getValueRange(fort, `E${startIndex+3}`, teamInfo[constants.CHAR_1].artifactId),
+        getValueRange(fort, `G${startIndex+3}`, teamInfo[constants.CHAR_1].hp),
+        getValueRange(fort, `H${startIndex+3}`, teamInfo[constants.CHAR_1].immunity),
+        getValueRange(fort, `I${startIndex+3}`, teamInfo[constants.CHAR_1].cr),
+        getValueRange(fort, `B${startIndex+4}`, teamInfo[constants.CHAR_1].notes),
+      
+        getValueRange(fort, `B${startIndex+6}`, teamInfo[constants.CHAR_2].heroId),
+        getValueRange(fort, `E${startIndex+6}`, teamInfo[constants.CHAR_2].artifactId),
+        getValueRange(fort, `G${startIndex+6}`, teamInfo[constants.CHAR_2].hp),
+        getValueRange(fort, `H${startIndex+6}`, teamInfo[constants.CHAR_2].immunity),
+        getValueRange(fort, `I${startIndex+6}`, teamInfo[constants.CHAR_2].cr),
+        getValueRange(fort, `B${startIndex+7}`, teamInfo[constants.CHAR_2].notes),
+      
+        getValueRange(fort, `B${startIndex+9}`, teamInfo[constants.CHAR_3].heroId),
+        getValueRange(fort, `E${startIndex+9}`, teamInfo[constants.CHAR_3].artifactId),
+        getValueRange(fort, `G${startIndex+9}`, teamInfo[constants.CHAR_3].hp),
+        getValueRange(fort, `H${startIndex+9}`, teamInfo[constants.CHAR_3].immunity),
+        getValueRange(fort, `I${startIndex+9}`, teamInfo[constants.CHAR_3].cr),
+        getValueRange(fort, `B${startIndex+10}`, teamInfo[constants.CHAR_3].notes),
+    ]
+  } 
+
+  try {
+    const request = gapi.client.sheets.spreadsheets.values.batchUpdate(params, requestBody)
+    
+    request.then(function(response) {
+      // TODO: Change code below to process the `response` object:
+      console.log(response.result);
+    }, function(reason) {
+      console.error('error: ' + reason.result.error.message);
+    });
+  } catch(err) {
+    console.log("Failed sheets request", err)
+  }
+}
+
+
+EditTeam.propTypes = {
+  team: PropTypes.string,
+  fort: PropTypes.string,
+  onExit: PropTypes.func,
+}
+
+function EditTeam(props) {
   const [teamInfo, setTeamInfo] = useState(props.teamInfo);
   const [playerName, setPlayerName] = useState(props.playerName);
-  const { onSave, onCancel } = props;
+  const { fort, team, onExit, gapi, editTeam } = props;
 
   function clearInfo() {
-    setTeamInfo(initialTeamInfo);
+    setTeamInfo(getInitialTeamInfo());
     setPlayerName("")
+  }
+
+  function onSave() {
+    editTeam(fort, team, teamInfo, playerName);
+    updateSheetTeam(fort, team, teamInfo, playerName, gapi);
+    onExit()
   }
 
   function getOnChangeFunc(field) {
@@ -69,8 +137,18 @@ export default function EditTeam(props) {
       <Card elevation={1} style={{margin: "1vh", padding: "3vh"}}>
         <EditCharacter charInfo={teamInfo[constants.CHAR_3]} setCharInfo={(heroDetails) => setTeamInfo({...teamInfo, [constants.CHAR_3]: heroDetails})}  />
       </Card>
-      <Button onClick={() => onSave(teamInfo, playerName)} variant="contained">Save</Button>
-      <Button style={{marginLeft: "3px"}} onClick={onCancel} variant="contained">Cancel</Button>
+      <Button onClick={onSave} variant="contained">Save</Button>
+      <Button style={{marginLeft: "3px"}} onClick={onExit} variant="contained">Cancel</Button>
     </>
   );
 }
+
+const mapStateToProps = (state, props) => {
+  return ({
+    playerName: state.gwInfo[props.fort][constants.PLAYER_NAME],
+    teamInfo: state.gwInfo[props.fort][props.team],
+    gapi: state.gapi,
+  });
+}
+
+export default connect(mapStateToProps, {editTeam})(EditTeam);

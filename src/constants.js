@@ -15,3 +15,5 @@ export const YOUR_FASTEST_SPEED = 'yourFastestSpeed';
 export const NOTES = 'notes';
 export const NUM_OUTSPED = 'numOutsped';
 export const IMG_SRC = 'imgSrc';
+
+export const API_KEY = 'AIzaSyDSCzwVhdk1rFP8dG2Uejl9U-7yw5AMhVM'

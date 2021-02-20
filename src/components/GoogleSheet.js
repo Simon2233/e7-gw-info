@@ -1,25 +1,10 @@
-import React, { useEffect, Fragment } from "react";
 import superagent from 'superagent';
-import { connect } from 'react-redux';
 import {editGwInfo} from '../redux/actions'
 import * as constants from '../constants'
-
-function makeCharacter(heroId, artifactId, hp, immunity, cr, notes, spd) {
-  return {
-    heroDetails: {
-      _id: heroId || ""
-    },
-    artifactDetails: {
-      _id: artifactId || "",  
-    },
-    hp: hp || "",
-    cr: cr || "",
-    spd: spd || "",
-    immunity: immunity || "no",
-    notes: notes || "",
-  }
-}
-
+import { getInitialCharInfo } from '../structs';
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import React from 'react';
 
 function speedCalc(fastestSpd, numFaster, c1, c2, c3) {
   // given a list of numbers, rank them from smallest to largest
@@ -44,14 +29,26 @@ function speedCalc(fastestSpd, numFaster, c1, c2, c3) {
     }
   })
   
-  
   orderAndCrArray = Object.entries(crs)
   orderAndCrArray.forEach(x => {
     speeds[x[0]] = Math.round(fastestSpd * x[1] /100)
   })  
 
-  
   return speeds;
+}
+
+function makeCharacter(heroId, artifactId, hp, immunity, cr, notes, spd) {
+  const char = getInitialCharInfo();
+
+  if (heroId) char.heroId = heroId;
+  if (artifactId) char.artifactId = artifactId
+  if (hp) char.hp = hp;
+  if (immunity) char.immunity = immunity;
+  if (cr) char.cr = cr;
+  if (notes) char.notes = notes;
+  if (spd) char.spd = spd;
+
+  return char;
 }
 
 function makeTeam(sheetTeam) {
@@ -109,42 +106,37 @@ function makeGwInfo(sheets) {
   }
 }
 
-GoogleSheet.propTypes = {
-}
+export function GoogleSheet(props) {
+  const {editGwInfo} = props;
 
-function GoogleSheet(props) {
-  const { editGwInfo } = props;
+  async function loadGoogleSheetInfo() {
+    const range = "M1:R12";
+  
+    try {
+      let response = await superagent.get(
+        "https://sheets.googleapis.com/v4/spreadsheets/1l_UrwdZxNQfpJ0XwZKe0tYCi1R7TjHGJ1fEFa58h404/values:batchGet?" + 
+        `ranges='${constants.LEFT_FORTRESS}'!${range}&` +
+        `ranges='${constants.MIDDLE_FORTRESS}'!${range}&` +
+        `ranges='${constants.RIGHT_FORTRESS}'!${range}&` +
+        `ranges='${constants.STRONGHOLD}'!${range}&` +
+        `key=${constants.API_KEY}`
+      )
+      const sheets = JSON.parse(response.text).valueRanges;
+      const gwInfo = makeGwInfo(sheets);
+  
+      editGwInfo(gwInfo);
+    } catch(err) {
+      console.log("Failed sheets batchGet request", err)
+      throw err
+    }
+  }
 
   useEffect(() => {
-    async function getGwInfo() {
-      const range = "M1:R12";
-
-      try {
-        let response = await superagent.get(
-          "https://sheets.googleapis.com/v4/spreadsheets/1l_UrwdZxNQfpJ0XwZKe0tYCi1R7TjHGJ1fEFa58h404/values:batchGet?" + 
-          `ranges='Left Fortress'!${range}&` +
-          `ranges='Middle Fortress'!${range}&` +
-          `ranges='Right Fortress'!${range}&` +
-          `ranges='Stronghold'!${range}&` +
-          "key=AIzaSyDSCzwVhdk1rFP8dG2Uejl9U-7yw5AMhVM"
-        )
-        const sheets = JSON.parse(response.text).valueRanges;
-        // console.log(sheets)
-        
-        const gwInfo = makeGwInfo(sheets);
-        // console.log(mainInfo)
-        editGwInfo(gwInfo);
-
-      } catch(err) {
-        console.log("Failed sheets request", err)
-        throw err
-      }
-    }
-    getGwInfo()
+    loadGoogleSheetInfo()
   }, [])
-  return (
-    <></>
-  );
+
+  return <>
+  </>
 }
 
 export default connect(null, {editGwInfo})(GoogleSheet);
