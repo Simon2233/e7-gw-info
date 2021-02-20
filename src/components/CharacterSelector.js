@@ -18,7 +18,7 @@ CharacterSelector.propTypes = {
 function CharacterSelector(props) {
   const {heroId, heroMap, onSelect: setHeroDetails, loadHeroMap } = props;
   const [selectedHeroId, setSelectedHeroId] = useState(heroId)
-  const heroDetails = heroMap[heroId];
+  const heroDetails = heroMap[selectedHeroId];
 
   useEffect(() => {
     callHeroListApi(loadHeroMap)
@@ -35,7 +35,6 @@ function CharacterSelector(props) {
         onChange={(event, hero) => {
           if (!hero) {
             setSelectedHeroId(null);
-            setHeroDetails(null);
             return;
           }
           setSelectedHeroId(hero._id);
