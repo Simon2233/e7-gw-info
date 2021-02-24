@@ -16,7 +16,7 @@ CharacterSelector.propTypes = {
 }
 
 function CharacterSelector(props) {
-  const {heroId, heroMap, onSelect: setHeroDetails, loadHeroMap } = props;
+  const {heroId, heroMap, onSelect, loadHeroMap } = props;
   const [selectedHeroId, setSelectedHeroId] = useState(heroId)
   const heroDetails = heroMap[selectedHeroId];
 
@@ -34,9 +34,11 @@ function CharacterSelector(props) {
       <Autocomplete
         onChange={(event, hero) => {
           if (!hero) {
+            onSelect(null)
             setSelectedHeroId(null);
             return;
           }
+          onSelect(hero._id)
           setSelectedHeroId(hero._id);
         }}
         defaultValue={heroDetails}

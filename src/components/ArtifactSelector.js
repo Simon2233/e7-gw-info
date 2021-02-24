@@ -16,7 +16,7 @@ ArtifactSelector.propTypes = {
 }
 
 function ArtifactSelector(props) {
-  const { artifactId, artifactMap, onSelect: setArtifactDetails, loadArtifactMap  } = props
+  const { artifactId, artifactMap, onSelect, loadArtifactMap  } = props
   const [selectedArtifactId, setSelectedArtifactId] = useState(artifactId);
   const artifactDetails = artifactMap[selectedArtifactId];
 
@@ -35,8 +35,10 @@ function ArtifactSelector(props) {
         onChange={(event, artifact) => {
           if (!artifact) {
             setSelectedArtifactId();
+            onSelect();
             return;
           }
+          onSelect(artifact._id)
           setSelectedArtifactId(artifact._id);
         }}
         defaultValue={artifactDetails}

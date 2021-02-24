@@ -24,16 +24,16 @@ export async function callHeroListApi(loadHeroMap) {
 
 export async function callArtifactListApi(loadArtifactMap) {
   try {
-    let response = await superagent.get('https://api.epicsevendb.com/hero')
+    let response = await superagent.get('https://api.epicsevendb.com/artifact')
     const results = JSON.parse(response.text).results
-    const hero_idToHero = {}
-    results.forEach((hero) => {
-      hero_idToHero[hero._id] = hero;
+    const arti_idToArti = {}
+    results.forEach((arti) => {
+      arti_idToArti[arti._id] = arti;
     })
 
-    loadArtifactMap(hero_idToHero);
+    loadArtifactMap(arti_idToArti);
   } catch(err) {
-    console.log("Failed request for heroes list")
+    console.log("Failed request for artifacts list")
     throw err
   }
 }

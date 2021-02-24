@@ -30,7 +30,12 @@ function Fort({ fort, playerName, gapi }) {
         return;
       }
 
-      const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
+      if (!gapi.auth2) {
+        console.log("GAPI auth2 not initialized", gapi.auth2)
+        return;
+      }
+
+      const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
       if (!isSignedIn) {
         gapi.auth2.getAuthInstance().signIn({
           ux_mode: "redirect",
