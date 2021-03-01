@@ -1,11 +1,19 @@
-import { IconButton, Paper } from '@material-ui/core';
+import { IconButton, makeStyles, Paper } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as constants from '../constants';
 import HeroInfo from './HeroInfo';
+
+const useStyles = makeStyles({
+  pageRule: {
+    border: 0,
+    borderTop: "1px solid",
+    borderColor: "rgba(0,0,0,0.1)", 
+  },
+});
 
 TeamDisplay.propTypes = {
 	setEditingTeam: PropTypes.func,
@@ -14,17 +22,23 @@ TeamDisplay.propTypes = {
 }
 
 function TeamDisplay(props) {
-  const { setEditingTeam, teamInfo } = props;
+  const { setEditingTeam, teamInfo, gapi, team, fort } = props;
   const showEdit = true;
+  
+  const classes = useStyles();
+
+  const id=`${fort}-${team}-edit`;
 
   const content = (
     <div style={{position: "relative"}}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <HeroInfo charInfo={teamInfo[constants.CHAR_1]} />
+          <hr className={classes.pageRule}></hr>
         </Grid>
         <Grid item xs={12}>
           <HeroInfo charInfo={teamInfo[constants.CHAR_2]} />
+          <hr className={classes.pageRule}></hr>
         </Grid>
         <Grid item xs={12}>
           <HeroInfo charInfo={teamInfo[constants.CHAR_3]} />
@@ -32,7 +46,7 @@ function TeamDisplay(props) {
       </Grid>
       {showEdit && 
         <div style={{position: "absolute", right: "-10px", bottom: "0px"}}>
-          <IconButton onClick={setEditingTeam} variant="contained"><EditIcon /></IconButton>
+          <IconButton id={id} variant="contained"><EditIcon /></IconButton>
         </div>
       }
     </div>
