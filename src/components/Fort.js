@@ -68,7 +68,7 @@ function Fort({ fort, playerName, gapi }) {
       {editingTeam === EDITING_TEAM2 &&
         <EditTeam fort={fort} team={constants.TEAM_2} onExit={onExitEdit} />
       }
-      <Button onClick={() => gapi.auth2.getAuthInstance().signOut()}>Sign out</Button>
+      <Button size="small"  onClick={() => gapi.auth2.getAuthInstance().signOut()}>Sign out</Button>
     </div>
   );
 }

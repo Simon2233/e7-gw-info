@@ -46,7 +46,7 @@ function TeamDisplay(props) {
       </Grid>
       {showEdit && 
         <div style={{position: "absolute", right: "-10px", bottom: "0px"}}>
-          <IconButton id={id} variant="contained"><EditIcon /></IconButton>
+          <IconButton onClick={setEditingTeam} id={id} variant="contained"><EditIcon /></IconButton>
         </div>
       }
     </div>
