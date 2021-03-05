@@ -24,6 +24,10 @@ function CharacterSelector(props) {
     callHeroListApi(loadHeroMap)
   }, [])
 
+  useEffect(() => {
+    setSelectedHeroId(heroId)
+  }, [heroId])
+
   return (
     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <div style={{width: "12vh", height: "12vh", marginRight: "5px", border: "1px solid rgba(0,0,0,0.10)", borderRadius: "10px"}}>
@@ -41,7 +45,7 @@ function CharacterSelector(props) {
           onSelect(hero._id)
           setSelectedHeroId(hero._id);
         }}
-        defaultValue={heroDetails}
+        value={heroDetails}
         options={Object.values(heroMap)}
         getOptionLabel={(hero) => hero.name}
         style={{ width: 300 }}

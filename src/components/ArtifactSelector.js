@@ -24,6 +24,10 @@ function ArtifactSelector(props) {
     callArtifactListApi(loadArtifactMap)
   }, [])
 
+  useEffect(() => {
+    setSelectedArtifactId(artifactId)
+  }, [artifactId])
+
   return (
     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <div style={{width: "12vh", height: "12vh", marginRight: "5px", border: "1px solid rgba(0,0,0,0.10)", borderRadius: "10px"}}>
@@ -41,7 +45,7 @@ function ArtifactSelector(props) {
           onSelect(artifact._id)
           setSelectedArtifactId(artifact._id);
         }}
-        defaultValue={artifactDetails}
+        value={artifactDetails}
         options={Object.values(artifactMap)}
         getOptionLabel={(artifact) => artifact.name}
         style={{ width: 300 }}
