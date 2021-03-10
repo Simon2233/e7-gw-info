@@ -25,19 +25,19 @@ function Fort({ fort, playerName, gapi }) {
 
   function getSetEditingTeamFunc(editing_team) {
     return () => {
-      if (!gapi) {
-        console.log("GAPI not initialized", gapi)
+      if (!window.gapi) {
+        console.log("GAPI not initialized", window.gapi)
         return;
       }
 
-      if (!gapi.auth2) {
-        console.log("GAPI auth2 not initialized", gapi.auth2)
+      if (!window.gapi.auth2) {
+        console.log("GAPI auth2 not initialized", window.gapi.auth2)
         return;
       }
 
-      const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+      const isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.get();
       if (!isSignedIn) {
-        gapi.auth2.getAuthInstance().signIn({
+        window.gapi.auth2.getAuthInstance().signIn({
           ux_mode: "redirect",
         });
         return;
